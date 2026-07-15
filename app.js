@@ -1,6 +1,9 @@
 require('dotenv').config();
 const express = require('express');
+const connectDB = require('./src/config/database');
 const app = express();
+
+connectDB();
 
 const auditMiddleware = require('./src/middlewares/auditoria.middleware');
 const errorHandlerMiddleware = require('./src/middlewares/errorHandler.middleware');
