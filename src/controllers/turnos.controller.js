@@ -1,12 +1,5 @@
 const Turno = require('../models/Turno');
 
-let turnos = [
-    {id: 1, paciente: 'juan perez', dni: '3388557744', especialidad: 'cardiologia'},
-    {id: 2, paciente: 'pedro perez', dni: '34234234234', especialidad: 'cardiologia'},
-    {id: 3, paciente: 'maria Garcia', dni: '3231231345', especialidad: 'cardiologia'},
-    {id: 4, paciente: 'luis Rodriguez', dni: '33812312744', especialidad: 'cardiologia'},
-]
-
 const respuestaEstandar = (res, status, success, message, data = null) => {
     return res.status(status).json({
         success,
@@ -18,8 +11,14 @@ const respuestaEstandar = (res, status, success, message, data = null) => {
 };
 
 
-const getTurnos = (req, res) => {
-    respuestaEstandar(res, 200, true, 'Turnos obtenidos exitosamente', turnos);
+const getTurnos = async (req, res) => {
+    try {
+        const turnos = await Turno.find();
+
+         return respuestaEstandar(res, 200, true, 'Turnos obtenidos exitosamente', turnos);
+    } catch (error) {
+         return respuestaEstandar(res, 500, false, 'Error interno del servidor', error.message);
+    }
 };
 
 const createTurno = async (req, res) => {
@@ -39,16 +38,20 @@ const createTurno = async (req, res) => {
   };
 };
 
-const deleteTurno = (req, res) => {
-    const { id } = req.params;
-    const turnoExiste = turnos.some(t => t.id === parseInt(id));
+const deleteTurno = async (req, res) => {
+    try {
 
-    if (!turnoExiste) {
-        return respuestaEstandar(res, 404, false, 'Turno no encontrado');
+        const { id } = req.params;
+        const turno = await Turno.findByIdAndDelete(id);
+
+        if (!turno) {
+            return respuestaEstandar(res, 404, false, 'Turno no encontrado con ID ${id}');
+        }
+        
+        return respuestaEstandar(res, 200, true, 'Turno eliminado exitosamente', turno);
+    } catch (error) {
+        return respuestaEstandar(res, 400, false, 'ID con formato invalido', error.message);
     }
-
-    turnos = turnos.filter(t => t.id !== parseInt(id));
-    respuestaEstandar(res, 200, true, 'Turno eliminado exitosamente', turnos);
 };
 
 module.exports = { getTurnos, createTurno, deleteTurno };
