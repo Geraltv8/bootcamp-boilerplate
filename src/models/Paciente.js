@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const HistoriaClinica = require('./HistoriaClinica');
 
 const pacienteSchema = new mongoose.Schema({
     nombre: {
@@ -66,32 +67,6 @@ const pacienteSchema = new mongoose.Schema({
             type: String
         },
     },
-    historialMedico: {
-        fecha:{
-            type: Date,
-            required: [true, 'La fecha del historial médico es obligatoria'],
-            validate: {
-            validator: function(value) {
-                return value >= new Date();
-            },
-            message: 'La fecha del turno debe ser una fecha futura',
-        }
-        },
-        diagnostico: {
-            type: String,
-            required: [true, 'El diagnóstico es obligatorio']
-        },
-        tratamiento: {
-            type: String,
-            required: [true, 'El tratamiento es obligatorio']
-
-        },
-        medico: {
-            type: String,
-            required: [true, 'El nombre del médico es obligatorio']
-        }
-       
-    }
 }, {
     timestamps: true
 });
