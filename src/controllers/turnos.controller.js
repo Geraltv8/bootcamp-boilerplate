@@ -1,21 +1,10 @@
 const Turno = require('../models/Turno');
-
-const respuestaEstandar = (res, status, success, message, data = null) => {
-    return res.status(status).json({
-        success,
-        timestamp: new Date().toISOString(),
-        message,
-        total: Array.isArray(data) ? data.length : data ? 1 : 0,
-        data
-    });
-};
-
+const respuestaEstandar = require('../utils/respuestaEstandar');
 
 const getTurnos = async (req, res) => {
     try {
-        const turnos = await Turno.find();
-
-         return respuestaEstandar(res, 200, true, 'Turnos obtenidos exitosamente', turnos);
+        const turnos = await Turno.find({ activo: true }).populate('paciente');
+        return respuestaEstandar(res, 200, true, 'Turnos obtenidos exitosamente', turnos);
     } catch (error) {
          return respuestaEstandar(res, 500, false, 'Error interno del servidor', error.message);
     }
@@ -42,14 +31,21 @@ const deleteTurno = async (req, res) => {
     try {
 
         const { id } = req.params;
-        const turno = await Turno.findByIdAndDelete(id);
 
-        if (!turno) {
+        const turnoBorrado = await Turno.findByIdAndUpdate(
+            id, 
+            { activo: false },
+            { estado: 'cancelado' },
+            { new: true }
+        );
+
+        if (!turnoBorrado) {
             return respuestaEstandar(res, 404, false, 'Turno no encontrado con ID ${id}');
         }
         
-        return respuestaEstandar(res, 200, true, 'Turno eliminado exitosamente', turno);
+        return respuestaEstandar(res, 200, true, 'Turno eliminado exitosamente', turnoBorrado);
     } catch (error) {
+        console.error('Error al eliminar el turno:', error);
         return respuestaEstandar(res, 400, false, 'ID con formato invalido', error.message);
     }
 };
