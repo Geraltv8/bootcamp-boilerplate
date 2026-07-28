@@ -4,7 +4,24 @@ const respuestaEstandar = require('../utils/respuestaEstandar');
 
 const getPacientes = async (req, res) => {
     try {
-        const pacientes = await Paciente.find();
+        
+        // ?obraSocial=OSDE&dni=12345678
+        const { obraSocial, dni } = req.query;
+
+        const filtro = {};
+
+        if (obraSocial) {
+            // filtro.obraSocial = "" "" ""
+            filtro['obraSocial.nombre'] = obraSocial.toUpperCase();
+        }
+
+        if (dni) {
+            filtro.dni = dni;
+        }
+
+        console.log("🟢 Filtro armado:", filtro);
+
+        const pacientes = await Paciente.find(filtro);
 
         return respuestaEstandar(res, 200, true, 'Pacientes obtenidos exitosamente', pacientes);
 
