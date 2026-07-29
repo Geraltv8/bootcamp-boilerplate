@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const HistoriaClinica = require('./HistoriaClinica');
 
 const pacienteSchema = new mongoose.Schema({
     nombre: {

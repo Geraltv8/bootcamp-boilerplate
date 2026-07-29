@@ -25,6 +25,14 @@ const HistoriaClinicaSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Los antecedentes son obligatorios'],  
     },
+    motivoConsulta: {
+         type: String,
+         required: [true, 'El motivo de la consulta es obligatorio']
+    },
+    sintomas: {
+         type: [String],
+         default: []
+    },
     diagnostico: {
         type: String,
         required: [true, 'El diagnóstico es obligatorio'],
