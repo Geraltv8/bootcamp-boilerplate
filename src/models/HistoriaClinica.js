@@ -9,7 +9,7 @@ const HistoriaClinicaSchema = new mongoose.Schema({
     medico: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Medico',
-        required: [true, 'El ID del médico es obligatorio'],
+       
     },
     fecha: {
         type: Date,
@@ -22,8 +22,53 @@ const HistoriaClinicaSchema = new mongoose.Schema({
         }
     },
     antecedentes: {
-        type: String,
-        required: [true, 'Los antecedentes son obligatorios'],  
+        alergias: {
+            type: [String],
+            default: []
+        },
+        enfermedadesCronicas: {
+            type: [String],
+            default: []
+        }, 
+        medicamentosHabituales: {
+           type: [String],
+           default: []
+        },
+        cirugiasPrevias: {
+           type: [String],
+           default: []
+        },
+        internacionesPrevias: {
+           type: [String],
+           default: []
+        },
+        antecedentesFamiliares: {
+           type: [String],
+           default: []
+        },
+        vacunas: {
+           type: [String],
+           default: []
+        },
+        habitos: {
+            tabaquismo: {
+               type: Boolean,
+               default: false
+           },
+            alcohol: {
+               type: Boolean,
+               default: false
+           },
+           actividadFisica: {
+               type: String,
+               enum: ['Ninguna', 'Baja', 'Moderada', 'Alta'],
+               default: 'Ninguna'
+           }
+        },
+        otros: {
+           type: String,
+           maxlength: 500
+        } 
     },
     motivoConsulta: {
          type: String,
@@ -49,10 +94,18 @@ const HistoriaClinicaSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
         select: false
-    }
+    },
+ 
 }, {
     timestamps: true,
 });
 
+   HistoriaClinicaSchema.set('toJSON', {
+    transform: (documento, historiaClinicaRetorno) => {
+        historiaClinicaRetorno.id = historiaClinicaRetorno._id;
+        delete historiaClinicaRetorno._id;
+        delete historiaClinicaRetorno .__v;
+    }
+});
 
 module.exports = mongoose.model('HistoriaClinica', HistoriaClinicaSchema);

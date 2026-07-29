@@ -1,4 +1,4 @@
-const historiaClinicaController = require('../controllers/historiaClinica.controller');
+const HistoriaClinica = require('../models/HistoriaClinica');
 const respuestaEstandar = require('../utils/respuestaEstandar');
 
 const getHistoriasClinicas = async (req, res) => {
@@ -18,7 +18,7 @@ const getHistoriasClinicas = async (req, res) => {
         if (sintomas) {
             filter.sintomas = { $in: sintomas.split(',') };
         }
-        const historiasClinicas = await historiaClinicaController.getHistoriasClinicas(filter);   
+        const historiasClinicas = await HistoriaClinica.find(filter);   
 
         return respuestaEstandar(res, 200, true, 'Historias clínicas obtenidas exitosamente', historiasClinicas);
     } catch (error) {
@@ -29,7 +29,7 @@ const getHistoriasClinicas = async (req, res) => {
 const getHistoriaClinicaById = async (req, res) => {
     try {
         const { id } = req.params;
-        const historiaClinica = await historiaClinicaController.getHistoriaClinicaById(id);
+        const historiaClinica = await HistoriaClinica.findById(id);
 
         return respuestaEstandar(res, 200, true, 'Historia clínica obtenida exitosamente', historiaClinica);
     } catch (error) {
@@ -39,10 +39,10 @@ const getHistoriaClinicaById = async (req, res) => {
 
 const createHistoriaClinica = async (req, res) => {
     try {
-        const nuevaHistoriaClinica = await historiaClinicaController.createHistoriaClinica(req.body);   
+        const nuevaHistoriaClinica = await HistoriaClinica.create(req.body);   
 
         return respuestaEstandar(res, 201, true, 'Historia clínica creada exitosamente', nuevaHistoriaClinica);
-        
+
     } catch (error) {
 
         if (error.name === 'ValidationError') {
