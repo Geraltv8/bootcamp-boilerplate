@@ -3,7 +3,7 @@ const respuestaEstandar = require('../utils/respuestaEstandar');
 
 const getHistoriasClinicas = async (req, res) => {
     try {
-        const { pacienteId, medicoId, fecha, sintomas} = req.params;
+        const { pacienteId, medicoId, fecha, sintomas} = req.query;
 
         const  filter = {};
         if (pacienteId) {
@@ -53,8 +53,31 @@ const createHistoriaClinica = async (req, res) => {
     }
 }
 
+const deleteHistoriaClinica  = async (req, res) => {
+    try {
+
+        const { id } = req.params;
+
+        const historiaBorrada = await HistoriaClinica.findByIdAndUpdate(
+            id, 
+            { activo: false },
+            { new: true }
+        );
+
+        if (!historiaBorrada) {
+            return respuestaEstandar(res, 404, false, 'Historia clínica no encontrada con ID ${id}');
+        }
+        
+        return respuestaEstandar(res, 200, true, 'Historia clínica eliminada exitosamente', historiaBorrada);
+    } catch (error) {
+        console.error('Error al eliminar la historia clínica:', error);
+        return respuestaEstandar(res, 400, false, 'ID con formato invalido', error.message);
+    }
+};
+
 module.exports = {
     getHistoriasClinicas,
     getHistoriaClinicaById,
-    createHistoriaClinica
+    createHistoriaClinica,
+    deleteHistoriaClinica
 };
