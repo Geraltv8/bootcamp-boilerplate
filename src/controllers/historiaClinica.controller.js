@@ -5,7 +5,7 @@ const getHistoriasClinicas = async (req, res) => {
     try {
         const { pacienteId, medicoId, fecha, sintomas} = req.query;
 
-        const  filter = {};
+        const  filter = {activo: true};
         if (pacienteId) {
             filter.paciente = pacienteId;
         }
