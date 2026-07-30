@@ -2,7 +2,7 @@ const Paciente = require('../models/Paciente');
 const respuestaEstandar = require('../utils/respuestaEstandar');
 
 
-const getPacientes = async (req, res) => {
+/*const getPacientes = async (req, res) => {
     try {
         
         // ?obraSocial=OSDE&dni=12345678
@@ -66,4 +66,4 @@ module.exports = {
     getPacientes,
     createPaciente,
     deletePaciente
-};
+}; */
