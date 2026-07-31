@@ -27,5 +27,5 @@ app.listen(PORT, () => {
     console.log(`============SERVIDOR MUNICIPAL ACTIVO==========`);
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
     console.log(`Entorno: ${process.env.ENTORNO || 'Local'} `);
-    console.log(`===============================================`);
+    console.log(`=====================   ==========================`);
 });
