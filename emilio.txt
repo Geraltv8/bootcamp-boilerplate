@@ -1,1 +1,36 @@
 Emilio Estuvo Aqui
+Medico:{
+"idMedico":
+"Nombre":
+"Apellido":
+"DNI":
+"idEspecialidad":
+"Telefono":
+"email":
+"Activo":
+o "Estado":
+}
+Especialidad:{
+"idEspecialidad":
+"Nombre":
+"Descripcion":
+}
+HistoriaClinica:{
+"idHistoriaClinica":
+"Nombre":
+"Antecedentes Personales":
+"Antedentes familiares": en duda
+"Alergias":
+"Tratamiento":
+}
+Consultorio:{
+"idConsultorio":
+"Nombre":
+"idEspecialidad":
+"profesionalResponsable":
+"Telefono":
+"CorreoElectronico":
+"Direccion":
+"HorarioAtencion":
+"Ciudad":
+}
