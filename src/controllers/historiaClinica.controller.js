@@ -18,7 +18,7 @@ const getHistoriasClinicas = async (req, res) => {
         if (sintomas) {
             filter.sintomas = { $in: sintomas.split(',') };
         }
-        const historiasClinicas = await HistoriaClinica.find(filter);   
+        const historiasClinicas = await HistoriaClinica.find(filter).populate('paciente').populate('medico',"nombre especialidad");   
 
         return respuestaEstandar(res, 200, true, 'Historias clínicas obtenidas exitosamente', historiasClinicas);
     } catch (error) {
