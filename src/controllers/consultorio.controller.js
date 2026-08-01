@@ -26,10 +26,17 @@ const createConsultorio = async (req, res) => {
 const deleteConsultorio = async (req, res) => {
     try {
         const { id } = req.params;
-        const consultorioBorrado = await Consultorio.findByIdAndDelete(id);
+
+        const consultorioBorrado = await Consultorio.findByIdAndUpdate(
+            id,
+            { activo: false },
+            { new: true }
+        );
+
         if (!consultorioBorrado) {
             return respuestaEstandar(res, 404, false, 'Consultorio no encontrado');
         }
+
         return respuestaEstandar(res, 200, true, 'Consultorio eliminado exitosamente', consultorioBorrado);
     } catch (error) {
         return respuestaEstandar(res, 500, false, 'Error interno del servidor', error.message);
