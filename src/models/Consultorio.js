@@ -5,7 +5,6 @@ const consultorioSchema = new moongose.Schema({
         type: moongose.Schema.Types.ObjectId,
         ref: 'Medico',
         required: [true, 'El nombre del médico es obligatorio'],
-        uppercase: true,
     },
     especialidad: {
         type: moongose.Schema.Types.ObjectId,
@@ -74,9 +73,22 @@ const consultorioSchema = new moongose.Schema({
         required: [true, 'El correo electrónico del consultorio es obligatorio'],
         unique: [true, 'El correo electrónico del consultorio debe ser único'],
         match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'El correo electrónico no es válido']
-    }
+    },
+   activo: {
+        type: Boolean,
+        default: true,
+        select: false
+    },
 },{
     timestamps: true,
+});
+consultorioSchema.set('toJSON', {
+    transform: (documento, consultorioRetorno) => {
+        consultorioRetorno.id = consultorioRetorno._id;
+        delete consultorioRetorno._id;
+        delete consultorioRetorno.__v;
+        return consultorioRetorno;
+    }
 });
 
 module.exports = moongose.model('Consultorio', consultorioSchema);

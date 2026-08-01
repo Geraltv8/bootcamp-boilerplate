@@ -13,7 +13,7 @@ const medicoSchema = new mongoose.Schema({
     },
     especialidad: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Paciente',
+        ref: 'Especialidad',
     },
     telefono: {
         tipo: {

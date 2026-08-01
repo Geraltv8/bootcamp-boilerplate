@@ -105,6 +105,7 @@ const HistoriaClinicaSchema = new mongoose.Schema({
         historiaClinicaRetorno.id = historiaClinicaRetorno._id;
         delete historiaClinicaRetorno._id;
         delete historiaClinicaRetorno .__v;
+        return historiaClinicaRetorno;
     }
 });
 

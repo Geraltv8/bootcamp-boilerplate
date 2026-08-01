@@ -6,7 +6,7 @@ const {
   createEspecialidad,
   updateEspecialidad,
   deleteEspecialidad
-} = require('../controllers/especialidad');
+} = require('../controllers/Especialidades.controller');
 
 router.get('/', getEspecialidades); 
 router.get('/:id', getEspecialidadById); 

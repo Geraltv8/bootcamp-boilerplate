@@ -32,7 +32,7 @@ const deleteMedico = async (req, res) => {
 
         const { id } = req.params;
 
-        const MedicoBorrado = await Medico.findByIdAndUpdate(
+        const medicoBorrado = await Medico.findByIdAndUpdate(
             id, 
             { activo: false },
             { new: true }
@@ -42,7 +42,7 @@ const deleteMedico = async (req, res) => {
             return respuestaEstandar(res, 404, false, 'Medico no encontrado con ID ${id}');
         }
         
-        return respuestaEstandar(res, 200, true, 'Medico eliminado exitosamente', turnoBorrado);
+        return respuestaEstandar(res, 200, true, 'Medico eliminado exitosamente', medicoBorrado );
     } catch (error) {
         console.error('Error al eliminar el Medico:', error);
         return respuestaEstandar(res, 400, false, 'ID con formato invalido', error.message);
