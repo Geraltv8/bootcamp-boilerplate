@@ -3,7 +3,7 @@ const respuestaEstandar = require('../utils/respuestaEstandar');
 
 const getConsultorios = async (req, res) => {
     try {
-        const consultorios = await Consultorio.find().populate('medico').populate('especialidad');
+        const consultorios = await Consultorio.find({ activo: true }).populate('medico').populate('especialidad');
         return respuestaEstandar(res, 200, true, 'Consultorios obtenidos exitosamente', consultorios);
     } catch (error) {
         return respuestaEstandar(res, 500, false, 'Error interno del servidor', error.message);

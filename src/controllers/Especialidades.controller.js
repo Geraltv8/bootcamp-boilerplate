@@ -3,7 +3,7 @@ const respuestaEstandar = require('../utils/respuestaEstandar');
 
 const getEspecialidades = async (req, res) => {
   try {
-    const especialidades = await Especialidad.find();
+    const especialidades = await Especialidad.find({ activo: true });
     return respuestaEstandar(res, 200, true, 'Especialidades obtenidas exitosamente', especialidades);
   } catch (error) {
     return respuestaEstandar(res, 500, false, 'Error al obtener las especialidades', error.message);
