@@ -40,4 +40,4 @@ historiaClinicaSchema.set('toJSON', {
     }
 });
 
-module.exports = mongoose.model('HistoriaClinica', historiaClinicaSchema);
+module.exports = mongoose.model('HistoriaClinica', historiaClinicaSchema); 
