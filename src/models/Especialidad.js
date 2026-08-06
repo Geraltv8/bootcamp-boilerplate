@@ -23,6 +23,7 @@ const especialidadSchema = new mongoose.Schema({
     },
 }, {
     timestamps: true,
+    collection: 'especialidades',
 });
 
 especialidadSchema.set('toJSON', {
