@@ -63,7 +63,7 @@ En Posman :
   }
 }
 ```
-### GET '<URL-BASE>/api/v1/pacientes'
+### GET `<URL-BASE>/api/v1/pacientes´
 Devuelve:
 ```
 {
@@ -144,7 +144,7 @@ Devuelve:
     ]
 }
 ```
-### POST '<URL-BASE>/api/v1/especialidades'
+### POST `<URL-BASE>/api/v1/especialidades´
 ```
 {
   "nombre": "Kinesiología",
@@ -152,7 +152,7 @@ Devuelve:
   "categoria": "Terapéutica"
 }
 ```
-### POST '<URL-BASE>/api/v1/medicos'
+### POST `<URL-BASE>/api/v1/medicos´
 ```
 {
   "nombre": "Ana Fernández",
@@ -166,7 +166,7 @@ Devuelve:
   "email": "ana.fernandez@hospital.com"
 }
 ```
-### GET '<URL-BASE>/api/v1/medicos'
+### GET `<URL-BASE>/api/v1/medicos´
 Devuelve:
 ```
 {
@@ -244,7 +244,7 @@ Devuelve:
     ]
 }
 ```
-### POST '<URL-BASE>/api/v1/consultorios'
+### POST `<URL-BASE>/api/v1/consultorios´
 ```
 {
   "medico": "6a6e58b60b640089be6b753b",// Cambiar por un id de medico generado anteriormente
@@ -274,7 +274,7 @@ Devuelve:
   "email": "consultorio.ana@hospital.com"
 }
 ```
-### GET '<URL-BASE>/api/v1/consultorios'
+### GET `<URL-BASE>/api/v1/consultorios´
 ```
 {
     "success": true,
@@ -387,7 +387,7 @@ Devuelve:
     ]
 }
 ```
-### POST '<URL-BASE>/api/v1/historias-clinicas'
+### POST `<URL-BASE>/api/v1/historias-clinicas´
 
 ```
 {
@@ -434,7 +434,7 @@ Devuelve:
   "observaciones": "Se solicita control dentro de los próximos 15 días."
 }
 ```
-### GET '<URL-BASE>/api/v1/historias-clinicas'
+### GET `<URL-BASE>/api/v1/historias-clinicas´
 Devuelve:
 ```
 {
