@@ -12,6 +12,7 @@ const turnosRoutes = require('./src/routes/turnos.routes');
 const pacientesRoutes = require('./src/routes/paciente.routes');
 const medicosRoutes = require('./src/routes/medico.routes');
 const especialidadesRoutes = require('./src/routes/especialidad.routes');
+const consultoriosRoutes = require('./src/routes/consultorios.routes');
 
 app.use(express.json());
 app.use(auditMiddleware);
@@ -20,7 +21,7 @@ app.use('/api/v1/turnos', turnosRoutes);
 app.use('/api/v1/pacientes', pacientesRoutes);
 app.use('/api/v1/medicos', medicosRoutes);
 app.use('/api/v1/especialidades', especialidadesRoutes);
-
+app.use('/api/v1/consultorios', consultoriosRoutes);
 app.use(errorHandlerMiddleware);
 
 const PORT = process.env.PORT || 3000;
