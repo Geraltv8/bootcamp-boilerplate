@@ -4,38 +4,35 @@ const Paciente = require('../models/Paciente');
 const respuestaEstandar = require('../utils/respuestaEstandar');
 
 const registrarIngreso = async (req, res) => {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
     try {
         const { datosPaciente, especialidad, fechaTurno, estado, observaciones } = req.body;
 
-        const [nuevoPaciente] = await Paciente.create([datosPaciente], { session });
+        // 1. Creamos el paciente de forma directa sin la sesión
+        const nuevoPaciente = await Paciente.create(datosPaciente);
 
-        const [nuevoTurno] = await Turno.create([{
+        // 2. Creamos el turno vinculándolo al ID del paciente recién creado
+        const nuevoTurno = await Turno.create({
             paciente: nuevoPaciente._id,
             especialidad,
             fechaTurno,
             estado: estado || 'pendiente',
             observaciones
-        }], { session });
+        });
 
-        await session.commitTransaction();
-        session.endSession();
-
-        const turnoCompleto = await Turno.findById(nuevoTurno.id).populate('paciente');
+        // 3. Buscamos el turno completo para devolverlo en la respuesta
+        const turnoCompleto = await Turno.findById(nuevoTurno._id).populate('paciente');
 
         return respuestaEstandar(res, 201, true, "ingreso paciente nuevo", turnoCompleto);
+        
     } catch (error) {
-        await session.abortTransaction();
-        session.endSession();
-
+        // Mantenemos tu manejo de errores intacto
         if (error.name === 'ValidationError') {
             const errores = Object.values(error.errors).map(err => err.message);
             return respuestaEstandar(res, 400, false, 'Error de validación', errores);
         }
 
-        return respuestaEstandar(res, 400, false, "transaccion abortada", error.message);
+        // Cambié el mensaje de "transaccion abortada" para que tenga más sentido ahora
+        return respuestaEstandar(res, 400, false, "Error al registrar el ingreso", error.message);
     }
 };
 

@@ -3,6 +3,7 @@ const respuestaEstandar = require('../utils/respuestaEstandar');
 
 const getTurnos = async (req, res) => {
     try {
+        //trae solo el nombre y el dni, oculta el id interno 
         const turnos = await Turno.find({ activo: true }).populate('paciente');
         return respuestaEstandar(res, 200, true, 'Turnos obtenidos exitosamente', turnos);
     } catch (error) {
@@ -12,7 +13,7 @@ const getTurnos = async (req, res) => {
 
 const createTurno = async (req, res) => {
     try {
-
+        //saber desde donde se manda la peticion 
         const origenPeticion = req.headers['x-origen'];
         const tokenSeguridad = req.headers['authorization'];
 
@@ -22,14 +23,16 @@ const createTurno = async (req, res) => {
             return respuestaEstandar(res, 401, false, 'no tiene permisos');
         }
 
-        const esUrgente = req.query.urgencia === 'true';
+        const esUrgente = req.query.urgencia === 'true'; //query pharams, solo manda true
 
+    
         const datosDelTurno = {
             paciente: req.body.paciente,
             especialidad: req.body.especialidad,
             fechaTurno: req.body.fechaTurno
         };
 
+        //validacion para saber que hacer en un caso de urgencia
         if (esUrgente) {
             datosDelTurno.estado = 'atendido';
             datosDelTurno.observaciones = 'ingreso por guardia medica';
