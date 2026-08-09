@@ -104,4 +104,12 @@ pacienteSchema.set('toJSON', {
     }
 });
 
+/* =========================================
+   GUÍA: CAMPOS VIRTUALES (VIRTUALS)
+   Son propiedades que NO se guardan en la base de datos,
+    sino que Mongoose las calcula al vuelo en el aire justo antes de enviar el JSON mediante la red.
+   // IMPORTANTE: Para que el JSON final incluya estos campos "fantasma", debemos avisarle al toJSON[cite: 1]:
+   pacienteSchema.set('toJSON', { virtuals: true });
+========================================= */
+
 module.exports = mongoose.model('Paciente', pacienteSchema);
