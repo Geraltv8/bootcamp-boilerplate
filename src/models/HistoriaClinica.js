@@ -5,7 +5,6 @@ const historiaClinicaSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Paciente',
         required: true,
-        unique: true
     },
     medico: {
         type: mongoose.Schema.Types.ObjectId,

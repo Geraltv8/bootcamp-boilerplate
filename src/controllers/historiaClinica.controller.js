@@ -3,12 +3,39 @@ const respuestaEstandar = require('../utils/respuestaEstandar');
 
 const getHistoriasClinicas = async (req, res) => {
     try {
-        const historias = await HistoriaClinica.find();
-        return respuestaEstandar(res, 200, historias);
+        const { pacienteId, medicoId} = req.query;
+
+        const filter = { activo: true };
+
+        if (pacienteId) {
+            filter.paciente = pacienteId;
+        }
+
+        if (medicoId) {
+            filter.medico = medicoId;
+        }
+
+        const historiasClinicas = await HistoriaClinica
+            .find(filter)
+            .populate('paciente')
+            .populate('medico', 'nombre especialidad');
+
+        return respuestaEstandar(
+            res,
+            200,
+            true,
+            'Historias clínicas obtenidas exitosamente',
+            historiasClinicas
+        );
+
     } catch (error) {
-        return respuestaEstandar(res, 500, {
-            message: 'Error al obtener las historias clínicas'
-        });
+        return respuestaEstandar(
+            res,
+            500,
+            false,
+            'Error al obtener las historias clínicas',
+            error.message
+        );
     }
 };
 
