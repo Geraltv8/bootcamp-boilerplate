@@ -1,3 +1,4 @@
+const Paciente = require ('../models/Paciente');
 const Turno = require('../models/Turno');
 const respuestaEstandar = require('../utils/respuestaEstandar');
 
@@ -73,4 +74,33 @@ const deleteTurno = async (req, res) => {
     }
 };
 
-module.exports = { getTurnos, createTurno, deleteTurno };
+const crearTurnoAsistencia = async (req, res) => {
+  try {
+    const { paciente, turno } = req.body;
+    let pacienteId;
+
+    // PASO 1: Busco si el paciente ya existe por DNI
+    let pacienteExistente = await Paciente.findOne({ dni: paciente.dni });
+
+    if (pacienteExistente) {
+      pacienteId = pacienteExistente._id; // Si existe, uso ese ID
+    } else {
+      // Si NO existe, lo creo
+      const nuevoPaciente = await Paciente.create(paciente);
+      pacienteId = nuevoPaciente._id;
+    }
+
+    // PASO 2: Creo el turno con el ID del paciente
+    const nuevoTurno = await Turno.create({
+      ...turno,
+      paciente: pacienteId
+    });
+
+    return respuestaEstandar(res, 201, true, 'Turno y paciente registrados exitosamente', nuevoTurno);
+    
+  } catch (error) {
+    return respuestaEstandar(res, 500, false, 'Error al registrar asistencia', error.message);
+  }
+};
+
+module.exports = { getTurnos, createTurno, deleteTurno, crearTurnoAsistencia };

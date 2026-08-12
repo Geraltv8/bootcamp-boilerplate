@@ -10,12 +10,22 @@ const errorHandlerMiddleware = require('./src/middlewares/errorHandler.middlewar
 
 const turnosRoutes = require('./src/routes/turnos.routes');
 const pacientesRoutes = require('./src/routes/paciente.routes');
+const especialidadesRoutes = require ('./src/routes/Especialidad.routers');
+const consultorioRoutes = require('./src/routes/consultorio.routes');
+const historiaClinicaRoutes = require('./src/routes/historiaClinica.routes');
+const medicosRoutes = require('./src/routes/medicos.routes');   
+
+
 
 app.use(express.json());
 app.use(auditMiddleware);
 
 app.use('/api/v1/turnos', turnosRoutes);
 app.use('/api/v1/pacientes', pacientesRoutes);
+app.use('/api/v1/especialidades', especialidadesRoutes);
+app.use('/api/v1/consultorios', consultorioRoutes);
+app.use('/api/v1/historias-clinicas', historiaClinicaRoutes);
+app.use('/api/v1/medicos', medicosRoutes);
 
 app.use(errorHandlerMiddleware);
 
