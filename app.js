@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cors = require('cors');
 const express = require('express');
 const connectDB = require('./src/config/database');
 const app = express();
@@ -14,6 +15,7 @@ const recepcionRoutes = require('./src/routes/recepcion.routes');
 
 app.use(express.json());
 app.use(auditMiddleware);
+app.use(cors());
 
 app.use('/api/v1/turnos', turnosRoutes);
 app.use('/api/v1/pacientes', pacientesRoutes);
