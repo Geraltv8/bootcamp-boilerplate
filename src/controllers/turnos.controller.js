@@ -3,7 +3,15 @@ const respuestaEstandar = require('../utils/respuestaEstandar');
 
 const getTurnos = async (req, res) => {
     try {
-        const turnos = await Turno.find({ activo: true }).populate('paciente');
+        const { id } = req.query;
+    
+        if (id) {
+            const turnos = await Turno.findById(id).populate('paciente');
+            return respuestaEstandar(res, 200, true, 'Turnos obtenidos exitosamente', turnos);
+        }
+           
+        const turnos = await Turno.find({activo: true}).populate('paciente');
+        
         return respuestaEstandar(res, 200, true, 'Turnos obtenidos exitosamente', turnos);
     } catch (error) {
          return respuestaEstandar(res, 500, false, 'Error interno del servidor', error.message);
@@ -13,14 +21,14 @@ const getTurnos = async (req, res) => {
 const createTurno = async (req, res) => {
     try {
 
-        const origenPeticion = req.headers['x-origen'];
+       /* const origenPeticion = req.headers['x-origen'];
         const tokenSeguridad = req.headers['authorization'];
 
         console.log("🌎 Peticion realizada desde:", origenPeticion);
 
         if (tokenSeguridad != 'token123') {
             return respuestaEstandar(res, 401, false, 'no tiene permisos');
-        }
+        } */
 
         const esUrgente = req.query.urgencia === 'true';
 
