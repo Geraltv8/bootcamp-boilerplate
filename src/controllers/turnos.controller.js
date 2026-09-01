@@ -73,4 +73,21 @@ const deleteTurno = async (req, res) => {
     }
 };
 
-module.exports = { getTurnos, createTurno, deleteTurno };
+const marcarAtendido = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const turnoActualizado = await Turno.findByIdAndUpdate(
+            id,
+            { estado: 'atendido' },
+            { new: true }
+        );
+
+        if (!turnoActualizado) return respuestaEstandar(res, 404, false, 'turno no encontrado', id);
+        return respuestaEstandar(res, 200, true, 'turno actualizado', turnoActualizado);
+    } catch (error) {
+        return respuestaEstandar(res, 500, false, 'Error de servidor', error.message);
+    }
+};
+
+module.exports = { getTurnos, createTurno, deleteTurno, marcarAtendido };
