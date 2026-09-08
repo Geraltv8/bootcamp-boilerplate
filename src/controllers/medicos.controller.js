@@ -11,6 +11,18 @@ const getMedicos = async (req, res) => {
         return respuestaEstandar(res, 500, false, 'Error interno del servidor', error.message);
     }
 };
+const getMedicoById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const medico = await Medico.findById(id).populate('especialidad');
+        if (!medico) {
+            return respuestaEstandar(res, 404, false, 'Médico no encontrado');
+        }
+        return respuestaEstandar(res, 200, true, 'Médico obtenido exitosamente', medico);
+    } catch (error) {
+        return respuestaEstandar(res, 500, false, 'Error interno del servidor', error.message);
+    }
+};
 
 // Controlador para crear un nuevo médico
 const createMedico = async (req, res) => {
@@ -49,4 +61,4 @@ const deleteMedico = async (req, res) => {
     }
 };
 
-module.exports = { getMedicos, createMedico, deleteMedico };
+module.exports = { getMedicos, getMedicoById, createMedico, deleteMedico };

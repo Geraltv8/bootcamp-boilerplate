@@ -3,7 +3,8 @@ const router = express.Router();
 const { getTurnos, createTurno, deleteTurno, crearTurnoAsistencia } = require('../controllers/turnos.controller');
 
 router.get('/', getTurnos);
-router.post('/asistencia', crearTurnoAsistencia);
+router.get('/asistencia', crearTurnoAsistencia);
+router.post('/', createTurno);
 router.delete('/:id', deleteTurno);
 
 module.exports = router;

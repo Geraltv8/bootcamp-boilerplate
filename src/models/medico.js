@@ -28,7 +28,7 @@ const medicoSchema = new mongoose.Schema({
         numero: {
             type: String,
             required: true,
-            match: [/^[0-9]{7,10}$/, 'El número de teléfono no es válido']
+            match: [/^[0-9]{6,10}$/, 'El número de teléfono no es válido']
         }
     },
     email: {
