@@ -1,23 +1,30 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 require('dotenv/config');
 const cors = require('cors');
 const express = require('express');
+type Application = import('express').Application;
 const connectDB = require('./src/config/database');
-const app = express();
+
+const app: Application = express();
+
 connectDB();
+
 const auditMiddleware = require('./src/middlewares/auditoria.middleware');
 const errorHandlerMiddleware = require('./src/middlewares/errorHandler.middleware');
+
 const turnosRoutes = require('./src/routes/turnos.routes');
 const pacientesRoutes = require('./src/routes/paciente.routes');
 const recepcionRoutes = require('./src/routes/recepcion.routes');
+
 app.use(express.json());
 app.use(auditMiddleware);
 app.use(cors());
+
 app.use('/api/v1/turnos', turnosRoutes);
 app.use('/api/v1/pacientes', pacientesRoutes);
 app.use('/api/v1/recepcion', recepcionRoutes);
+
 app.use(errorHandlerMiddleware);
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`===============================================`);
@@ -26,4 +33,3 @@ app.listen(PORT, () => {
     console.log(`Entorno: ${process.env.ENTORNO || 'Local'} `);
     console.log(`===============================================`);
 });
-//# sourceMappingURL=app.js.map
