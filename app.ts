@@ -1,19 +1,20 @@
+import type { Application } from 'express';
+
 require('dotenv/config');
 const cors = require('cors');
 const express = require('express');
-type Application = import('express').Application;
-const connectDB = require('./src/config/database');
+const connectDB = require('./src/config/database').default;
+
+const auditMiddleware = require('./src/middlewares/auditoria.middleware').default;
+const errorHandlerMiddleware = require('./src/middlewares/errorHandler.middleware').default;
+
+const turnosRoutes = require('./src/routes/turnos.routes').default;
+const pacientesRoutes = require('./src/routes/paciente.routes').default;
+const recepcionRoutes = require('./src/routes/recepcion.routes').default;
 
 const app: Application = express();
 
 connectDB();
-
-const auditMiddleware = require('./src/middlewares/auditoria.middleware');
-const errorHandlerMiddleware = require('./src/middlewares/errorHandler.middleware');
-
-const turnosRoutes = require('./src/routes/turnos.routes');
-const pacientesRoutes = require('./src/routes/paciente.routes');
-const recepcionRoutes = require('./src/routes/recepcion.routes');
 
 app.use(express.json());
 app.use(auditMiddleware);
@@ -25,7 +26,8 @@ app.use('/api/v1/recepcion', recepcionRoutes);
 
 app.use(errorHandlerMiddleware);
 
-const PORT = process.env.PORT || 3000;
+const PORT: string | number = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
     console.log(`===============================================`);
     console.log(`============SERVIDOR MUNICIPAL ACTIVO==========`);

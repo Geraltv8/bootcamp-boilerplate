@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 import { ITurno } from "../interfaces/turnos/Turno.interface";
 import { Especialidad } from '../interfaces/turnos/TurnoEspecialidad.enum';
 import { EstadoTurno } from '../interfaces/turnos/TurnoEstado.enum';
@@ -48,10 +48,10 @@ const turnoSchema = new Schema<ITurno>({
 });
 
 turnoSchema.set('toJSON', {
-    transform: (documento, turnoRetorno) => {
+    transform: (documento: Document, turnoRetorno: Record<string, any>) => {
         turnoRetorno.id = turnoRetorno._id;
-        delete (turnoRetorno as { _id?: unknown })._id;
-        delete (turnoRetorno as { __v?: unknown }).__v;
+        delete turnoRetorno._id;
+        delete turnoRetorno.__v;
     }
 });
 
