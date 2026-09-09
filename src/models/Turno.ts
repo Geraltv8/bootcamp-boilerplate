@@ -1,8 +1,11 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
+import { ITurno } from "../interfaces/turnos/Turno.interface";
+import { Especialidad } from '../interfaces/turnos/TurnoEspecialidad.enum';
+import { EstadoTurno } from '../interfaces/turnos/TurnoEstado.enum';
 
-const turnoSchema = new mongoose.Schema({
+const turnoSchema = new Schema<ITurno>({
     paciente: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Paciente',
         required: [true, 'El ID del paciente es obligatorio'],
     },
@@ -10,7 +13,7 @@ const turnoSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: {
-            values: ['cardiologia', 'neurologia', 'pediatria', 'dermatologia'],
+            values: Object.values(Especialidad),
             message: '{VALUE} no es una especialidad válida',
         },
     },
@@ -18,7 +21,7 @@ const turnoSchema = new mongoose.Schema({
         type: Date,
         required: [true, 'La fecha del turno es obligatoria'],
         validate: {
-            validator: function(value) {
+            validator: function(value: Date) {
                 return value >= new Date();
             },
             message: 'La fecha del turno debe ser una fecha futura',
@@ -27,7 +30,7 @@ const turnoSchema = new mongoose.Schema({
     estado: {
         type: String,
         enum: {
-            values: ['pendiente', 'atendido', 'cancelado'],
+            values: Object.values(EstadoTurno),
             message: '{VALUE} no es un estado válido',
         },
     },
@@ -47,9 +50,11 @@ const turnoSchema = new mongoose.Schema({
 turnoSchema.set('toJSON', {
     transform: (documento, turnoRetorno) => {
         turnoRetorno.id = turnoRetorno._id;
-        delete turnoRetorno._id;
-        delete turnoRetorno.__v;
+        delete (turnoRetorno as { _id?: unknown })._id;
+        delete (turnoRetorno as { __v?: unknown }).__v;
     }
 });
 
-module.exports = mongoose.model('Turno', turnoSchema);
+const TurnoModel = model<ITurno>('Turno', turnoSchema);
+
+export default TurnoModel;
