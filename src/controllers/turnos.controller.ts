@@ -1,7 +1,10 @@
-const Turno = require('../models/Turno');
+import { Request, Response } from 'express';
+import { EstadoTurno } from '../interfaces/turnos/TurnoEstado.enum';
+import Turno from '../models/Turno';
+import { ICrearTurnoDTO, IQueryUrgencia } from '../interfaces/turnos/Request/TurnoDTO';
 const respuestaEstandar = require('../utils/respuestaEstandar');
 
-const getTurnos = async (req, res) => {
+const getTurnos = async (req: Request<unknown, unknown, unknown, { id?: string}>, res: Response) => {
     try {
         const { id } = req.query;
     
@@ -13,33 +16,24 @@ const getTurnos = async (req, res) => {
         const turnos = await Turno.find({activo: true}).populate('paciente');
         
         return respuestaEstandar(res, 200, true, 'Turnos obtenidos exitosamente', turnos);
-    } catch (error) {
+    } catch (error: any) {
          return respuestaEstandar(res, 500, false, 'Error interno del servidor', error.message);
     }
 };
 
-const createTurno = async (req, res) => {
+const createTurno = async (req: Request<unknown, unknown, ICrearTurnoDTO, IQueryUrgencia>, res: Response) => {
     try {
-
-       /* const origenPeticion = req.headers['x-origen'];
-        const tokenSeguridad = req.headers['authorization'];
-
-        console.log("🌎 Peticion realizada desde:", origenPeticion);
-
-        if (tokenSeguridad != 'token123') {
-            return respuestaEstandar(res, 401, false, 'no tiene permisos');
-        } */
 
         const esUrgente = req.query.urgencia === 'true';
 
-        const datosDelTurno = {
+        const datosDelTurno: any = {
             paciente: req.body.paciente,
             especialidad: req.body.especialidad,
             fechaTurno: req.body.fechaTurno
         };
 
         if (esUrgente) {
-            datosDelTurno.estado = 'atendido';
+            datosDelTurno.estado = EstadoTurno.ATENDIDO;
             datosDelTurno.observaciones = 'ingreso por guardia medica';
             console.log("🚨 ALERTA: registrado un turno de urgencia");
         }
@@ -47,10 +41,10 @@ const createTurno = async (req, res) => {
         const nuevoTurno = await Turno.create(datosDelTurno);
         return respuestaEstandar(res, 201, true, 'Turno creado exitosamente', nuevoTurno);
 
-    } catch (error) {
+    } catch (error: any) {
 
         if (error.name === 'ValidationError') {
-            const errores = Object.values(error.errors).map(err => err.message);
+            const errores = Object.values(error.errors).map((err: any) => err.message);
             return respuestaEstandar(res, 400, false, 'Error de validación', errores);
     }
 
@@ -58,15 +52,14 @@ const createTurno = async (req, res) => {
   };
 };
 
-const deleteTurno = async (req, res) => {
+const deleteTurno = async (req: Request<{ id: string}>, res: Response) => {
     try {
 
         const { id } = req.params;
 
         const turnoBorrado = await Turno.findByIdAndUpdate(
             id, 
-            { activo: false },
-            { estado: 'cancelado' },
+            { activo: false, estado: EstadoTurno.CANCELADO },
             { new: true }
         );
 
@@ -75,27 +68,27 @@ const deleteTurno = async (req, res) => {
         }
         
         return respuestaEstandar(res, 200, true, 'Turno eliminado exitosamente', turnoBorrado);
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error al eliminar el turno:', error);
         return respuestaEstandar(res, 400, false, 'ID con formato invalido', error.message);
     }
 };
 
-const marcarAtendido = async (req, res) => {
+const marcarAtendido = async (req: Request<{ id: string}>, res: Response) => {
     try {
         const { id } = req.params;
 
         const turnoActualizado = await Turno.findByIdAndUpdate(
             id,
-            { estado: 'atendido' },
+            { estado: EstadoTurno.ATENDIDO },
             { new: true }
         );
 
         if (!turnoActualizado) return respuestaEstandar(res, 404, false, 'turno no encontrado', id);
         return respuestaEstandar(res, 200, true, 'turno actualizado', turnoActualizado);
-    } catch (error) {
+    } catch (error: any) {
         return respuestaEstandar(res, 500, false, 'Error de servidor', error.message);
     }
 };
 
-module.exports = { getTurnos, createTurno, deleteTurno, marcarAtendido };
+export { getTurnos, createTurno, deleteTurno, marcarAtendido };
