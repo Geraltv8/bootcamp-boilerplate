@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { EstadoTurno } from '../interfaces/turnos/TurnoEstado.enum';
-import Turno from '../models/Turno';
-import { ICrearTurnoDTO, IQueryUrgencia } from '../interfaces/turnos/Request/TurnoDTO';
+import { EstadoTurno } from './types/TurnoEstado.enum';
+import Turno from './Turno';
+import { ICrearTurnoDTO, IQueryUrgencia } from './dtos/TurnoDTO';
 const respuestaEstandar = require('../utils/respuestaEstandar');
 
 const getTurnos = async (req: Request<unknown, unknown, unknown, { id?: string}>, res: Response) => {
