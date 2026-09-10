@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import { getTurnos, createTurno, deleteTurno, marcarAtendido } from '../controllers/turnos.controller';
+
+const router = Router();
+
+router.get('/', getTurnos);
+router.post('/', createTurno);
+router.delete('/:id', deleteTurno);
+router.patch('/:id', marcarAtendido);
+
+export default router;
