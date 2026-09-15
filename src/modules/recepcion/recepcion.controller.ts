@@ -16,7 +16,7 @@ const registrarIngreso = async (req: Request<unknown, unknown, IRegistrarIngreso
 
         const [nuevoPaciente] = await Paciente.create([datosPaciente], { session });
 
-        const [nuevoTurno]= await Turno.create([{
+        const [nuevoTurno] = await Turno.create([{
             paciente: nuevoPaciente._id,
             especialidad,
             fechaTurno,
