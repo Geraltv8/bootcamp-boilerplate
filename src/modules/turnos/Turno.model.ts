@@ -1,5 +1,5 @@
 import { Schema, model, Document } from 'mongoose';
-import { ITurno } from "./types/Turno.interface";
+import type { ITurno } from "./types/Turno.interface";
 import { Especialidad } from './types/TurnoEspecialidad.enum';
 import { EstadoTurno } from './types/TurnoEstado.enum';
 

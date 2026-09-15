@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import Paciente from './Paciente.model';
-import { ICrearPacienteDTO, IQueryPacientes } from './dtos/PacienteDTO';
+import type { ICrearPacienteDTO, IQueryPacientes } from './dtos/PacienteDTO';
 
-const respuestaEstandar = require('../../utils/respuestaEstandar');
+import { respuestaEstandar } from '../../utils/respuestaEstandar';
 
 const getPacientes = async (req: Request<unknown, unknown, unknown, IQueryPacientes>, res: Response) => {
     try {

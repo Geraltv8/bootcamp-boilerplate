@@ -1,16 +1,17 @@
 import type { Application } from 'express';
 
-require('dotenv/config');
-const cors = require('cors');
-const express = require('express');
-const connectDB = require('./src/config/database').default;
+import * as dotenv from "dotenv";
+dotenv.config();
+import cors from 'cors';
+import express from 'express';
+import { connectDB } from './src/config/database';
 
 const auditMiddleware = require('./src/middlewares/auditoria.middleware').default;
 const errorHandlerMiddleware = require('./src/middlewares/errorHandler.middleware').default;
 
-const turnosRoutes = require('./src/routes/turnos.routes').default;
-const pacientesRoutes = require('./src/modules/pacientes/pacientes.routes').default;
-const recepcionRoutes = require('./src/modules/recepcion/recepcion.routes').default;
+import turnosRoutes from './src/modules/turnos/turnos.routes';
+import pacientesRoutes from './src/modules/pacientes/pacientes.routes';
+import recepcionRoutes from './src/modules/recepcion/recepcion.routes';
 
 const app: Application = express();
 

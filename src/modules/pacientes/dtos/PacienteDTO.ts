@@ -1,6 +1,6 @@
 import { ObraSocial } from '../types/PacienteObraSocial.enum';
 import { TipoTelefono } from '../types/PacienteTelefono.enum';
-import { IDireccion, IHistorialMedico } from '../types/Paciente.interface';
+import type { IDireccion, IHistorialMedico } from '../types/Paciente.interface';
 
 export interface ICrearPacienteDTO {
     nombre: string;

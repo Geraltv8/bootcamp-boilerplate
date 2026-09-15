@@ -1,8 +1,9 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { EstadoTurno } from './types/TurnoEstado.enum';
 import Turno from './Turno.model';
-import { ICrearTurnoDTO, IQueryUrgencia } from './dtos/TurnoDTO';
-const respuestaEstandar = require('../utils/respuestaEstandar');
+import type { ICrearTurnoDTO, IQueryUrgencia } from './dtos/turno.schema';
+import { respuestaEstandar } from '../../utils/respuestaEstandar';
+import type { ITurno } from './types/Turno.interface';
 
 const getTurnos = async (req: Request<unknown, unknown, unknown, { id?: string}>, res: Response) => {
     try {
@@ -10,7 +11,10 @@ const getTurnos = async (req: Request<unknown, unknown, unknown, { id?: string}>
     
         if (id) {
             const turnos = await Turno.findById(id).populate('paciente');
-            return respuestaEstandar(res, 200, true, 'Turnos obtenidos exitosamente', turnos);
+            if (!turnos) {
+                return respuestaEstandar(res, 404, false, 'Turno no encontrado');
+            }
+            return respuestaEstandar<ITurno>(res, 200, true, 'Turnos obtenidos exitosamente', turnos);
         }
            
         const turnos = await Turno.find({activo: true}).populate('paciente');

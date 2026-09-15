@@ -1,5 +1,5 @@
 import { Document, Schema, model } from 'mongoose';
-import { IPaciente } from './types/Paciente.interface';
+import type { IPaciente } from './types/Paciente.interface';
 import { ObraSocial } from './types/PacienteObraSocial.enum';
 import { TipoTelefono } from './types/PacienteTelefono.enum';
 

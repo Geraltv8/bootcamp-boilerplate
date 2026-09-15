@@ -1,11 +1,11 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Paciente from '../pacientes/Paciente.model';
 import Turno from '../turnos/Turno.model';
-import { IRegistrarIngresoDTO } from './dtos/RecepcionDTO';
+import type { IRegistrarIngresoDTO } from './dtos/RecepcionDTO';
 import { EstadoTurno } from '../turnos/types/TurnoEstado.enum';
 
-const respuestaEstandar = require('../../utils/respuestaEstandar');
+import { respuestaEstandar } from '../../utils/respuestaEstandar';
 
 const registrarIngreso = async (req: Request<unknown, unknown, IRegistrarIngresoDTO>, res: Response) => {
     const session = await mongoose.startSession();
@@ -15,14 +15,21 @@ const registrarIngreso = async (req: Request<unknown, unknown, IRegistrarIngreso
         const { datosPaciente, especialidad, fechaTurno, estado, observaciones } = req.body;
 
         const [nuevoPaciente] = await Paciente.create([datosPaciente], { session });
+        if (!nuevoPaciente) {
+            throw new Error('No se pudo crear el paciente');
+        }
 
         const [nuevoTurno] = await Turno.create([{
-            paciente: nuevoPaciente._id,
+            paciente: nuevoPaciente.id as any,
             especialidad,
             fechaTurno,
             estado: estado || EstadoTurno.PENDIENTE,
             observaciones,
-        }], { session });
+        } as any], { session });
+
+        if (!nuevoTurno) {
+            throw new Error('No se pudo crear el turno');
+        }
 
         await session.commitTransaction();
         session.endSession();
