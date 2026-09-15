@@ -9,8 +9,8 @@ const auditMiddleware = require('./src/middlewares/auditoria.middleware').defaul
 const errorHandlerMiddleware = require('./src/middlewares/errorHandler.middleware').default;
 
 const turnosRoutes = require('./src/routes/turnos.routes').default;
-const pacientesRoutes = require('./src/routes/paciente.routes').default;
-const recepcionRoutes = require('./src/routes/recepcion.routes').default;
+const pacientesRoutes = require('./src/modules/pacientes/pacientes.routes').default;
+const recepcionRoutes = require('./src/modules/recepcion/recepcion.routes').default;
 
 const app: Application = express();
 

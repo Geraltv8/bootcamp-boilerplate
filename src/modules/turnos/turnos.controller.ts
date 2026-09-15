@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { EstadoTurno } from './types/TurnoEstado.enum';
-import Turno from './Turno';
+import Turno from './Turno.model';
 import { ICrearTurnoDTO, IQueryUrgencia } from './dtos/TurnoDTO';
 const respuestaEstandar = require('../utils/respuestaEstandar');
 
