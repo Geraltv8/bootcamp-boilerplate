@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import Paciente from '../pacientes/Paciente.model';
 import Turno from '../turnos/Turno.model';
 import { IRegistrarIngresoDTO } from './dtos/RecepcionDTO';
+import { EstadoTurno } from '../turnos/types/TurnoEstado.enum';
 
 const respuestaEstandar = require('../../utils/respuestaEstandar');
 
@@ -15,11 +16,11 @@ const registrarIngreso = async (req: Request<unknown, unknown, IRegistrarIngreso
 
         const [nuevoPaciente] = await Paciente.create([datosPaciente], { session });
 
-        const [nuevoTurno] = await Turno.create([{
+        const [nuevoTurno]= await Turno.create([{
             paciente: nuevoPaciente._id,
             especialidad,
             fechaTurno,
-            estado: estado || 'pendiente',
+            estado: estado || EstadoTurno.PENDIENTE,
             observaciones,
         }], { session });
 
