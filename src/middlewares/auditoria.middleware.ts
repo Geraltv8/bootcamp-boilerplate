@@ -1,5 +1,6 @@
+import type { Request, Response, NextFunction } from 'express';
 
-const auditoriaMunicipal = (req, res, next) => {
+const auditoriaMunicipal = (req: Request, res: Response, next: NextFunction) => {
     const horaActual = new Date().toLocaleTimeString();
     const metodo = req.method;
     const ruta = req.originalUrl;
@@ -10,4 +11,4 @@ const auditoriaMunicipal = (req, res, next) => {
 
 };
 
-module.exports = auditoriaMunicipal;
+export default auditoriaMunicipal;

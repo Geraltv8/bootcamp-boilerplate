@@ -6,8 +6,8 @@ import cors from 'cors';
 import express from 'express';
 import { connectDB } from './src/config/database';
 
-const auditMiddleware = require('./src/middlewares/auditoria.middleware').default;
-const errorHandlerMiddleware = require('./src/middlewares/errorHandler.middleware').default;
+import auditMiddleware from './src/middlewares/auditoria.middleware';
+import errorHandlerMiddleware from './src/middlewares/errorHandler.middleware';
 
 import turnosRoutes from './src/modules/turnos/turnos.routes';
 import pacientesRoutes from './src/modules/pacientes/pacientes.routes';

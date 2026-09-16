@@ -1,4 +1,6 @@
-const rutaNoEncontrada = (req, res, next) => {
+import type { Request, Response, NextFunction } from 'express';
+
+const rutaNoEncontrada = (req: Request, res: Response, next: NextFunction) => {
     res.status(404).json({
         success: false,
         timestamp: new Date().toISOString(),
@@ -7,4 +9,4 @@ const rutaNoEncontrada = (req, res, next) => {
     });
 };
 
-module.exports = rutaNoEncontrada;
+export default rutaNoEncontrada;

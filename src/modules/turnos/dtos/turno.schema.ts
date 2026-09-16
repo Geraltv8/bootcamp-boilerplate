@@ -15,6 +15,8 @@ export const CrearTurnoSchema = z.object({
     })
 });
 
+export type CrearTurnoDTO = z.infer<typeof CrearTurnoSchema>['body']
+
 export interface IQueryUrgencia {
     urgencia?: string;
 }
