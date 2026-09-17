@@ -15,8 +15,11 @@ export const CrearTurnoSchema = z.object({
     })
 });
 
-export type CrearTurnoDTO = z.infer<typeof CrearTurnoSchema>['body']
+export const queryUrgenciaSchema = z.object({
+    query: z.object({
+        urgencia: z.enum(['true', 'false']).optional()
+    })
+});
 
-export interface IQueryUrgencia {
-    urgencia?: string;
-}
+export type CrearTurnoDTO = z.infer<typeof CrearTurnoSchema>['body']
+export type IQueryUrgencia = z.infer<typeof queryUrgenciaSchema>['query']

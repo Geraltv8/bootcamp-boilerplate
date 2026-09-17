@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Paciente from '../pacientes/Paciente.model';
 import Turno from '../turnos/Turno.model';
-import type { IRegistrarIngresoDTO } from './dtos/RecepcionDTO';
+import type { IRegistrarIngresoDTO } from './dtos/Recepcion.schema';
 import { EstadoTurno } from '../turnos/types/TurnoEstado.enum';
 
 import { respuestaEstandar } from '../../utils/respuestaEstandar';

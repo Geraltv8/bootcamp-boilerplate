@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import Paciente from './Paciente.model';
-import type { ICrearPacienteDTO, IQueryPacientes } from './dtos/PacienteDTO';
+import type { ICrearPacienteDTO, IQueryPacientes } from './dtos/Paciente.schema';
 
 import { respuestaEstandar } from '../../utils/respuestaEstandar';
 
@@ -9,13 +9,9 @@ const getPacientes = async (req: Request<unknown, unknown, unknown, IQueryPacien
         const { obraSocial, dni } = req.query;
         const filtro: Record<string, string> = {};
 
-        if (obraSocial) {
-            filtro['obraSocial.nombre'] = obraSocial.toUpperCase();
-        }
+        if (obraSocial) filtro['obraSocial.nombre'] = obraSocial.toUpperCase();
 
-        if (dni) {
-            filtro.dni = dni;
-        }
+        if (dni) filtro.dni = dni;
 
         const pacientes = await Paciente.find(filtro);
 
