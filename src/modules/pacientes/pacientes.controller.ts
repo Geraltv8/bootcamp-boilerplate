@@ -27,11 +27,6 @@ const createPaciente = async (req: Request<unknown, unknown, ICrearPacienteDTO>,
 
         return respuestaEstandar(res, 201, true, 'Paciente creado exitosamente', nuevoPaciente);
     } catch (error: any) {
-        if (error.name === 'ValidationError') {
-            const errores = Object.values(error.errors).map((err: any) => err.message);
-            return respuestaEstandar(res, 400, false, 'Error de validación', errores);
-        }
-
         return respuestaEstandar(res, 500, false, 'Error al crear el paciente', error.message);
     }
 };

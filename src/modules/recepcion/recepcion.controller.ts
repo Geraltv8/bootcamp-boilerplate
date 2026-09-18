@@ -15,17 +15,16 @@ const registrarIngreso = async (req: Request<unknown, unknown, IRegistrarIngreso
         const { datosPaciente, especialidad, fechaTurno, estado, observaciones } = req.body;
 
         const [nuevoPaciente] = await Paciente.create([datosPaciente], { session });
-        if (!nuevoPaciente) {
-            throw new Error('No se pudo crear el paciente');
-        }
+        if (!nuevoPaciente) throw new Error('No se pudo crear el paciente');
+        
 
         const [nuevoTurno] = await Turno.create([{
-            paciente: nuevoPaciente.id as any,
+            paciente: nuevoPaciente._id,
             especialidad,
             fechaTurno,
             estado: estado || EstadoTurno.PENDIENTE,
             observaciones,
-        } as any], { session });
+        }], { session });
 
         if (!nuevoTurno) {
             throw new Error('No se pudo crear el turno');
@@ -34,17 +33,12 @@ const registrarIngreso = async (req: Request<unknown, unknown, IRegistrarIngreso
         await session.commitTransaction();
         session.endSession();
 
-        const turnoCompleto = await Turno.findById(nuevoTurno.id).populate('paciente');
+        const turnoCompleto = await Turno.findById(nuevoTurno._id).populate('paciente');
 
         return respuestaEstandar(res, 201, true, 'ingreso paciente nuevo', turnoCompleto);
     } catch (error: any) {
         await session.abortTransaction();
         session.endSession();
-
-        if (error.name === 'ValidationError') {
-            const errores = Object.values(error.errors).map((err: any) => err.message);
-            return respuestaEstandar(res, 400, false, 'Error de validación', errores);
-        }
 
         return respuestaEstandar(res, 400, false, 'transaccion abortada', error.message);
     }

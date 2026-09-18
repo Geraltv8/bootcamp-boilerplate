@@ -8,8 +8,8 @@ export const registrarIngresoSchema = z.object ({
         datosPaciente: crearPacienteSchema.shape.body,
         especialidad: z.enum(Especialidad),
         fechaTurno: z.iso.date({ message: "formato de fecha invaliudo" }),
-        estado: z.enum(EstadoTurno).optional(),
-        observaciones: z.string().optional()
+        estado: z.enum(EstadoTurno).optional().default(EstadoTurno.PENDIENTE),
+        observaciones: z.string().optional().default("")
     })
 });
 

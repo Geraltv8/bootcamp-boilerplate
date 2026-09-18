@@ -11,9 +11,7 @@ const getTurnos = async (req: Request<unknown, unknown, unknown, { id?: string}>
     
         if (id) {
             const turnos = await Turno.findById(id).populate('paciente');
-            if (!turnos) {
-                return respuestaEstandar(res, 404, false, 'Turno no encontrado');
-            }
+            if (!turnos) return respuestaEstandar(res, 404, false, 'Turno no encontrado');
             return respuestaEstandar<ITurno>(res, 200, true, 'Turnos obtenidos exitosamente', turnos);
         }
            
@@ -30,17 +28,14 @@ const createTurno = async (req: Request<unknown, unknown, CrearTurnoDTO, IQueryU
 
         const esUrgente = req.query.urgencia === 'true';
 
-        const datosDelTurno: any = {
-            paciente: req.body.paciente,
-            especialidad: req.body.especialidad,
-            fechaTurno: req.body.fechaTurno
+        const datosDelTurno = {
+            ...req.body,
+            estado: esUrgente ? EstadoTurno.ATENDIDO : EstadoTurno.PENDIENTE,
+            observaciones: esUrgente ? 'ingreso por guardia medica' : ""
         };
 
-        if (esUrgente) {
-            datosDelTurno.estado = EstadoTurno.ATENDIDO;
-            datosDelTurno.observaciones = 'ingreso por guardia medica';
-            console.log("🚨 ALERTA: registrado un turno de urgencia");
-        }
+        if (esUrgente) console.log("🚨 ALERTA: registrado un turno de urgencia");
+        
 
         const nuevoTurno = await Turno.create(datosDelTurno);
         return respuestaEstandar(res, 201, true, 'Turno creado exitosamente', nuevoTurno);
