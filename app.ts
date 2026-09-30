@@ -12,6 +12,7 @@ import errorHandlerMiddleware from './src/middlewares/errorHandler.middleware';
 import turnosRoutes from './src/modules/turnos/turnos.routes';
 import pacientesRoutes from './src/modules/pacientes/pacientes.routes';
 import recepcionRoutes from './src/modules/recepcion/recepcion.routes';
+import authRoutes from './src/modules/auth/auth.routes';
 
 const app: Application = express();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(auditMiddleware);
 app.use(cors());
 
+app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/turnos', turnosRoutes);
 app.use('/api/v1/pacientes', pacientesRoutes);
 app.use('/api/v1/recepcion', recepcionRoutes);
