@@ -2,7 +2,8 @@ import { Schema, model, Document } from 'mongoose';
 
 export enum Rol {
     ADMIN = 'ADMIN',
-    RECEPCIONISTA = 'RECEPCIONISTA'
+    RECEPCIONISTA = 'RECEPCIONISTA', 
+    PACIENTE = 'PACIENTE'
 }
 
 export interface IUsuario extends Document {

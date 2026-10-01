@@ -7,6 +7,7 @@ interface TokenPayload {
     id: string;
     user: string;
     rol: Rol;
+    activo: boolean;
 }
 
 declare global {
