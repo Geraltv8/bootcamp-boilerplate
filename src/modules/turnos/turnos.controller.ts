@@ -3,6 +3,7 @@ import { Types } from 'mongoose';
 import { EstadoTurno } from './types/TurnoEstado.enum';
 import Turno from './Turno.model';
 import Medico from '../medicos/Medico.model';
+import { verificarDisponibilidadTurno } from './services/verificarDisponibilidadTurno';
 import type { CrearTurnoDTO, IQueryUrgencia } from './dtos/turno.schema';
 import { respuestaEstandar } from '../../utils/respuestaEstandar';
 import type { ITurno } from './types/Turno.interface';
@@ -35,6 +36,11 @@ const createTurno = async (req: Request<unknown, unknown, CrearTurnoDTO, IQueryU
             const medico = await Medico.exists({ _id: medicoId, activo: true });
             if (!medico) {
                 return respuestaEstandar(res, 400, false, 'El médico asignado no existe o está inactivo');
+            }
+
+            const disponible = await verificarDisponibilidadTurno(medicoId, new Date(req.body.fechaTurno));
+            if (!disponible) {
+                return respuestaEstandar(res, 409, false, 'El médico ya tiene un turno asignado en ese horario');
             }
         }
 

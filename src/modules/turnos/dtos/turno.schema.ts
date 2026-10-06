@@ -12,7 +12,10 @@ export const CrearTurnoSchema = z.object({
         EstadoTurno: z.enum(EstadoTurno, {
             error: "Estado de turno no valido"
         }),
-        fechaTurno: z.iso.date({ message: "formato de fecha invaliudo" })
+        fechaTurno: z.union([
+            z.iso.date({ message: "formato de fecha inválido" }),
+            z.iso.datetime({ offset: true, message: "formato de fecha y hora inválido" }),
+        ])
     })
 });
 
