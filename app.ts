@@ -13,6 +13,7 @@ import turnosRoutes from './src/modules/turnos/turnos.routes';
 import pacientesRoutes from './src/modules/pacientes/pacientes.routes';
 import recepcionRoutes from './src/modules/recepcion/recepcion.routes';
 import consultorioRoutes from './src/modules/consultorio/consultorio.routes';
+import medicosRoutes from './src/modules/medicos/medicos.routes';
 import authRoutes from './src/modules/auth/auth.routes';
 
 const app: Application = express();
@@ -28,6 +29,7 @@ app.use('/api/v1/turnos', turnosRoutes);
 app.use('/api/v1/pacientes', pacientesRoutes);
 app.use('/api/v1/recepcion', recepcionRoutes);
 app.use('/api/v1/consultorio', consultorioRoutes);
+app.use('/api/v1/medicos', medicosRoutes);
 
 app.use(errorHandlerMiddleware);
 

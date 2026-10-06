@@ -9,6 +9,10 @@ const turnoSchema = new Schema<ITurno>({
         ref: 'Paciente',
         required: [true, 'El ID del paciente es obligatorio'],
     },
+    medicoId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Medico',
+    },
     especialidad: {
         type: String,
         required: true,

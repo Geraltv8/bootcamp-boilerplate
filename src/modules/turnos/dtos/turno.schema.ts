@@ -5,6 +5,7 @@ import { EstadoTurno } from '../types/TurnoEstado.enum';
 export const CrearTurnoSchema = z.object({
     body: z.object({
         paciente: z.string({ error: "El ID del paciente es obligatorio"}).min(1, "El ID del paciente es obligatorio"),
+        medicoId: z.string().regex(/^[a-f\d]{24}$/i, 'El ID del médico debe ser un ObjectId válido').optional(),
         especialidad: z.enum(Especialidad, {
             error:  "Especialidad no valida" 
         }),

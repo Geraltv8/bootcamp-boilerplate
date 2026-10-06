@@ -1,6 +1,8 @@
 import type { Request, Response } from 'express';
+import { Types } from 'mongoose';
 import { EstadoTurno } from './types/TurnoEstado.enum';
 import Turno from './Turno.model';
+import Medico from '../medicos/Medico.model';
 import type { CrearTurnoDTO, IQueryUrgencia } from './dtos/turno.schema';
 import { respuestaEstandar } from '../../utils/respuestaEstandar';
 import type { ITurno } from './types/Turno.interface';
@@ -27,9 +29,18 @@ const createTurno = async (req: Request<unknown, unknown, CrearTurnoDTO, IQueryU
     try {
 
         const esUrgente = req.query.urgencia === 'true';
+        const { medicoId, ...datosBase } = req.body;
+
+        if (medicoId) {
+            const medico = await Medico.exists({ _id: medicoId, activo: true });
+            if (!medico) {
+                return respuestaEstandar(res, 400, false, 'El médico asignado no existe o está inactivo');
+            }
+        }
 
         const datosDelTurno = {
-            ...req.body,
+            ...datosBase,
+            ...(medicoId ? { medicoId: new Types.ObjectId(medicoId) } : {}),
             estado: esUrgente ? EstadoTurno.ATENDIDO : EstadoTurno.PENDIENTE,
             observaciones: esUrgente ? 'ingreso por guardia medica' : ""
         };
