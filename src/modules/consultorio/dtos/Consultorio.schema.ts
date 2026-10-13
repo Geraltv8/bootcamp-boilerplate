@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { EspecialidadConsultorio } from '../types/EspecialidadConsultorio.enum';
+import { EspecialidadConsultorio } from '../types/EspecialidadConsultorio.enum.js';
 
 export const crearConsultorioSchema = z.object({
     body: z.object({

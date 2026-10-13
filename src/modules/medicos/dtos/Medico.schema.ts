@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Especialidad } from '../../turnos/types/TurnoEspecialidad.enum';
+import { Especialidad } from '../../turnos/types/TurnoEspecialidad.enum.js';
 
 const idSchema = z.string().regex(/^[a-f\d]{24}$/i, 'El ID debe ser un ObjectId válido');
 

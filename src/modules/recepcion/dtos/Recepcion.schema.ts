@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { crearPacienteSchema } from '../../pacientes/dtos/Paciente.schema';
-import { Especialidad } from '../../turnos/types/TurnoEspecialidad.enum';
-import { EstadoTurno } from '../../turnos/types/TurnoEstado.enum';
+import { crearPacienteSchema } from '../../pacientes/dtos/Paciente.schema.js';
+import { Especialidad } from '../../turnos/types/TurnoEspecialidad.enum.js';
+import { EstadoTurno } from '../../turnos/types/TurnoEstado.enum.js';
 
 export const registrarIngresoSchema = z.object ({
     body: z.object({

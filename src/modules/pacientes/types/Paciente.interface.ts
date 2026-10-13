@@ -1,6 +1,6 @@
 import { Document, Types } from 'mongoose';
-import { ObraSocial } from './PacienteObraSocial.enum';
-import { TipoTelefono } from './PacienteTelefono.enum';
+import { ObraSocial } from './PacienteObraSocial.enum.js';
+import { TipoTelefono } from './PacienteTelefono.enum.js';
 
 export interface IDireccion {
     calle: string;

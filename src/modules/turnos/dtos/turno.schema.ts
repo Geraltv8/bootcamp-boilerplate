@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { Especialidad } from '../types/TurnoEspecialidad.enum';
-import { EstadoTurno } from '../types/TurnoEstado.enum';
+import { Especialidad } from '../types/TurnoEspecialidad.enum.js';
+import { EstadoTurno } from '../types/TurnoEstado.enum.js';
 
 export const CrearTurnoSchema = z.object({
     body: z.object({

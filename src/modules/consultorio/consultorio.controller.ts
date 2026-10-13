@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
-import Consultorio from './Consultorio.model';
-import type { ICrearConsultorioDTO, IQueryConsultorios } from './dtos/Consultorio.schema';
-import { respuestaEstandar } from '../../utils/respuestaEstandar';
+import Consultorio from './Consultorio.model.js';
+import type { ICrearConsultorioDTO, IQueryConsultorios } from './dtos/Consultorio.schema.js';
+import { respuestaEstandar } from '../../utils/respuestaEstandar.js';
 
 const getConsultorios = async (req: Request<unknown, unknown, unknown, IQueryConsultorios>, res: Response) => {
     try {

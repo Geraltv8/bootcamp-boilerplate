@@ -1,11 +1,11 @@
 import type { Request, Response } from 'express';
 import { Types } from 'mongoose';
-import Medico from './Medico.model';
-import Usuario, { Rol } from '../auth/Usuario.model';
-import Turno from '../turnos/Turno.model';
-import { EstadoTurno } from '../turnos/types/TurnoEstado.enum';
-import type { IActualizarMedicoDTO, ICrearMedicoDTO, IQueryMedicos } from './dtos/Medico.schema';
-import { respuestaEstandar } from '../../utils/respuestaEstandar';
+import Medico from './Medico.model.js';
+import Usuario, { Rol } from '../auth/Usuario.model.js';
+import Turno from '../turnos/Turno.model.js';
+import { EstadoTurno } from '../turnos/types/TurnoEstado.enum.js';
+import type { IActualizarMedicoDTO, ICrearMedicoDTO, IQueryMedicos } from './dtos/Medico.schema.js';
+import { respuestaEstandar } from '../../utils/respuestaEstandar.js';
 
 const getMedicos = async (req: Request<unknown, unknown, unknown, IQueryMedicos>, res: Response) => {
     try {

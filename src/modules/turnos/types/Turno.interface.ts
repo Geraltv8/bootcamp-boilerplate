@@ -1,6 +1,6 @@
 import { Types, Document } from 'mongoose';
-import { Especialidad } from './TurnoEspecialidad.enum';
-import { EstadoTurno } from './TurnoEstado.enum';
+import { Especialidad } from './TurnoEspecialidad.enum.js';
+import { EstadoTurno } from './TurnoEstado.enum.js';
 
 export interface ITurno extends Document {
     id?: Types.ObjectId;

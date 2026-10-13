@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { ZodObject, ZodError } from 'zod';
-import { respuestaEstandar } from '../utils/respuestaEstandar';
+import { respuestaEstandar } from '../utils/respuestaEstandar.js';
 
 export const validarSchema = (schema: ZodObject) =>
 (req: Request, res: Response, next: NextFunction) => {

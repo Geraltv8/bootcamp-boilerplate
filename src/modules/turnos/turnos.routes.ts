@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { getTurnos, createTurno, deleteTurno, marcarAtendido } from './turnos.controller';
-import { validarSchema } from '../../middlewares/validarDatos.middleware'
-import { CrearTurnoSchema } from './dtos/turno.schema';
-import { validarJWT } from '../../middlewares/validarJWT.middleware';
-import { verificarRol } from '../../middlewares/verificarRol.middleware';
-import { Rol } from '../auth/Usuario.model';
+import { getTurnos, createTurno, deleteTurno, marcarAtendido } from './turnos.controller.js';
+import { validarSchema } from '../../middlewares/validarDatos.middleware.js'
+import { CrearTurnoSchema } from './dtos/turno.schema.js';
+import { validarJWT } from '../../middlewares/validarJWT.middleware.js';
+import { verificarRol } from '../../middlewares/verificarRol.middleware.js';
+import { Rol } from '../auth/Usuario.model.js';
 
 const router = Router();
 

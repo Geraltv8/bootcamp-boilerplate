@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
-import Turno from '../Turno.model';
-import { EstadoTurno } from '../types/TurnoEstado.enum';
+import Turno from '../Turno.model.js';
+import { EstadoTurno } from '../types/TurnoEstado.enum.js';
 
 const DURACION_TURNO_MS = 30 * 60 * 1000;
 
