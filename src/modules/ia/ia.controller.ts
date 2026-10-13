@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { modeloGemini } from '../../services/ia.service';
+import { genIA } from '../../services/ia.service';
 import { respuestaEstandar } from '../../utils/respuestaEstandar';
 import { z } from 'zod';
 
@@ -28,7 +28,7 @@ export const analizarHistorial = async (req: Request, res: Response) => {
         `;
 
         // 3. Pegada a la IA
-        const resultado = await modeloGemini.generateContent(prompt);
+        const resultado = await genIA.generateContent(prompt);
         const textoCrudo = resultado.response.text(); // Viene como string (esperemos que sea JSON)
 
         // 4. Transformación y Validación Isomórfica

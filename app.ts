@@ -1,7 +1,6 @@
 import type { Application } from 'express';
 
-import * as dotenv from "dotenv";
-dotenv.config();
+import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
 import { connectDB } from './src/config/database';
