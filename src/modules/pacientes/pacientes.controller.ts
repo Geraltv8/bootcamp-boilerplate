@@ -15,7 +15,7 @@ const getPacientes = async (req: Request<unknown, unknown, unknown, IQueryPacien
 
         const pacientes = await Paciente.find(filtro);
 
-        return respuestaEstandar(res, 200, true, 'Pacientes obtenidos exitosamente', pacientes);
+        return respuestaEstandar(res, 200, true, 'Pacientes obtenidos ', pacientes);
     } catch (error: any) {
         return respuestaEstandar(res, 500, false, 'Error al obtener los pacientes', error.message);
     }
