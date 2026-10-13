@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { analizarHistorial } from './ia.controller';
+import { analizarHistorial } from './ia.controller.js';
 
 const router = Router();
 

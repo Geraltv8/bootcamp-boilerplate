@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { ObraSocial } from '../types/PacienteObraSocial.enum';
-import { TipoTelefono } from '../types/PacienteTelefono.enum';
+import { ObraSocial } from '../types/PacienteObraSocial.enum.js';
+import { TipoTelefono } from '../types/PacienteTelefono.enum.js';
 
 export const direccionSchema = z.object({
     calle: z.string(),

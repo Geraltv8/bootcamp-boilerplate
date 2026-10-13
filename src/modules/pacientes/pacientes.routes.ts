@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { createPaciente, deletePaciente, getPacientes } from './pacientes.controller';
-import { crearPacienteSchema } from './dtos/Paciente.schema';
-import { validarSchema } from '../../middlewares/validarDatos.middleware';
+import { createPaciente, deletePaciente, getPacientes } from './pacientes.controller.js';
+import { crearPacienteSchema } from './dtos/Paciente.schema.js';
+import { validarSchema } from '../../middlewares/validarDatos.middleware.js';
 
 const router = Router();
 

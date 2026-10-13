@@ -1,6 +1,6 @@
 import { Schema, model, type Document } from 'mongoose';
-import type { IConsultorio } from './types/Consultorio.interface';
-import { EspecialidadConsultorio } from './types/EspecialidadConsultorio.enum';
+import type { IConsultorio } from './types/Consultorio.interface.js';
+import { EspecialidadConsultorio } from './types/EspecialidadConsultorio.enum.js';
 
 const consultorioSchema = new Schema<IConsultorio>({
     nombre: {

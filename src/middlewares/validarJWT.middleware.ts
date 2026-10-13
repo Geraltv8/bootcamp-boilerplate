@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import jwt  from 'jsonwebtoken';
-import { respuestaEstandar } from '../utils/respuestaEstandar';
-import { Rol } from '../modules/auth/Usuario.model';
+import { respuestaEstandar } from '../utils/respuestaEstandar.js';
+import { Rol } from '../modules/auth/Usuario.model.js';
 
 interface TokenPayload {
     id: string;

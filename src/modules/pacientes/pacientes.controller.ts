@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
-import Paciente from './Paciente.model';
-import type { ICrearPacienteDTO, IQueryPacientes } from './dtos/Paciente.schema';
+import Paciente from './Paciente.model.js';
+import type { ICrearPacienteDTO, IQueryPacientes } from './dtos/Paciente.schema.js';
 
-import { respuestaEstandar } from '../../utils/respuestaEstandar';
+import { respuestaEstandar } from '../../utils/respuestaEstandar.js';
 
 const getPacientes = async (req: Request<unknown, unknown, unknown, IQueryPacientes>, res: Response) => {
     try {
@@ -15,7 +15,7 @@ const getPacientes = async (req: Request<unknown, unknown, unknown, IQueryPacien
 
         const pacientes = await Paciente.find(filtro);
 
-        return respuestaEstandar(res, 200, true, 'Pacientes obtenidos exitosamente', pacientes);
+        return respuestaEstandar(res, 200, true, 'Pacientes obtenidos ', pacientes);
     } catch (error: any) {
         return respuestaEstandar(res, 500, false, 'Error al obtener los pacientes', error.message);
     }

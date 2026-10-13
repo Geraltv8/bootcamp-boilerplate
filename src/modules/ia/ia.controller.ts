@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import { genIA } from '../../services/ia.service';
-import { respuestaEstandar } from '../../utils/respuestaEstandar';
+import { genIA } from '../../services/ia.service.js';
+import { respuestaEstandar } from '../../utils/respuestaEstandar.js';
 import { z } from 'zod';
 
 const esquemaRespuestaIA = z.object({

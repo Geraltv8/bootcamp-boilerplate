@@ -3,18 +3,18 @@ import type { Application } from 'express';
 import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
-import { connectDB } from './src/config/database';
+import { connectDB } from './src/config/database.js';
 
-import auditMiddleware from './src/middlewares/auditoria.middleware';
-import errorHandlerMiddleware from './src/middlewares/errorHandler.middleware';
+import auditMiddleware from './src/middlewares/auditoria.middleware.js';
+import errorHandlerMiddleware from './src/middlewares/errorHandler.middleware.js';
 
-import turnosRoutes from './src/modules/turnos/turnos.routes';
-import pacientesRoutes from './src/modules/pacientes/pacientes.routes';
-import recepcionRoutes from './src/modules/recepcion/recepcion.routes';
-import consultorioRoutes from './src/modules/consultorio/consultorio.routes';
-import medicosRoutes from './src/modules/medicos/medicos.routes';
-import authRoutes from './src/modules/auth/auth.routes';
-import iaRoutes from './src/modules/ia/ia.routes';
+import turnosRoutes from './src/modules/turnos/turnos.routes.js';
+import pacientesRoutes from './src/modules/pacientes/pacientes.routes.js';
+import recepcionRoutes from './src/modules/recepcion/recepcion.routes.js';
+import consultorioRoutes from './src/modules/consultorio/consultorio.routes.js';
+import medicosRoutes from './src/modules/medicos/medicos.routes.js';
+import authRoutes from './src/modules/auth/auth.routes.js';
+import iaRoutes from './src/modules/ia/ia.routes.js';
 
 const app: Application = express();
 

@@ -1,7 +1,7 @@
 import { Document, Schema, model } from 'mongoose';
-import type { IPaciente } from './types/Paciente.interface';
-import { ObraSocial } from './types/PacienteObraSocial.enum';
-import { TipoTelefono } from './types/PacienteTelefono.enum';
+import type { IPaciente } from './types/Paciente.interface.js';
+import { ObraSocial } from './types/PacienteObraSocial.enum.js';
+import { TipoTelefono } from './types/PacienteTelefono.enum.js';
 
 const pacienteSchema = new Schema<IPaciente>({
     nombre: {
@@ -30,7 +30,7 @@ const pacienteSchema = new Schema<IPaciente>({
     },
     email: {
         type: String,
-        required: [true, 'El correo del paciente es obligatorio'],
+        required: [true, 'El correo electronico del paciente es obligatorio'],
         unique: [true, 'El correo electrónico del paciente debe ser único'],
         match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'El correo electrónico no es válido'],
     },

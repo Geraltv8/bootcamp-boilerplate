@@ -1,5 +1,5 @@
 import type { Document } from 'mongoose';
-import type { EspecialidadConsultorio } from './EspecialidadConsultorio.enum';
+import type { EspecialidadConsultorio } from './EspecialidadConsultorio.enum.js';
 
 export interface IConsultorio extends Document {
     nombre: string;

@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
-import type { IMedico } from './types/Medico.interface';
-import { Especialidad } from '../turnos/types/TurnoEspecialidad.enum';
+import type { IMedico } from './types/Medico.interface.js';
+import { Especialidad } from '../turnos/types/TurnoEspecialidad.enum.js';
 
 const medicoSchema = new Schema<IMedico>({
     usuarioId: {

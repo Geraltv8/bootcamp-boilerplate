@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { createConsultorio, deleteConsultorio, getConsultorios } from './consultorio.controller';
-import { crearConsultorioSchema } from './dtos/Consultorio.schema';
-import { validarSchema } from '../../middlewares/validarDatos.middleware';
+import { createConsultorio, deleteConsultorio, getConsultorios } from './consultorio.controller.js';
+import { crearConsultorioSchema } from './dtos/Consultorio.schema.js';
+import { validarSchema } from '../../middlewares/validarDatos.middleware.js';
 
 const router = Router();
 

@@ -1,5 +1,5 @@
 import type { Document, Types } from 'mongoose';
-import type { Especialidad } from '../../turnos/types/TurnoEspecialidad.enum';
+import type { Especialidad } from '../../turnos/types/TurnoEspecialidad.enum.js';
 
 export interface IMedico extends Document {
     usuarioId: Types.ObjectId;

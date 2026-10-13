@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { registrarIngreso } from './recepcion.controller';
-import { validarSchema } from '../../middlewares/validarDatos.middleware';
-import { registrarIngresoSchema } from './dtos/Recepcion.schema';
-import { verificarRol } from '../../middlewares/verificarRol.middleware';
-import { validarJWT } from '../../middlewares/validarJWT.middleware';
-import { Rol } from '../auth/Usuario.model';
+import { registrarIngreso } from './recepcion.controller.js';
+import { validarSchema } from '../../middlewares/validarDatos.middleware.js';
+import { registrarIngresoSchema } from './dtos/Recepcion.schema.js';
+import { verificarRol } from '../../middlewares/verificarRol.middleware.js';
+import { validarJWT } from '../../middlewares/validarJWT.middleware.js';
+import { Rol } from '../auth/Usuario.model.js';
 
 const router = Router();
 

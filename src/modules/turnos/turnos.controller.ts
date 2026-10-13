@@ -1,12 +1,12 @@
 import type { Request, Response } from 'express';
 import { Types } from 'mongoose';
-import { EstadoTurno } from './types/TurnoEstado.enum';
-import Turno from './Turno.model';
-import Medico from '../medicos/Medico.model';
-import { verificarDisponibilidadTurno } from './services/verificarDisponibilidadTurno';
-import type { CrearTurnoDTO, IQueryUrgencia } from './dtos/turno.schema';
-import { respuestaEstandar } from '../../utils/respuestaEstandar';
-import type { ITurno } from './types/Turno.interface';
+import { EstadoTurno } from './types/TurnoEstado.enum.js';
+import Turno from './Turno.model.js';
+import Medico from '../medicos/Medico.model.js';
+import { verificarDisponibilidadTurno } from './services/verificarDisponibilidadTurno.js';
+import type { CrearTurnoDTO, IQueryUrgencia } from './dtos/turno.schema.js';
+import { respuestaEstandar } from '../../utils/respuestaEstandar.js';
+import type { ITurno } from './types/Turno.interface.js';
 
 const getTurnos = async (req: Request<unknown, unknown, unknown, { id?: string}>, res: Response) => {
     try {

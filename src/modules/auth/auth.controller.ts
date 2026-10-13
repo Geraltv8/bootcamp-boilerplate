@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import bcrypt from 'bcrypt';
-import Usuario from './Usuario.model';
-import { respuestaEstandar } from '../../utils/respuestaEstandar';
+import Usuario from './Usuario.model.js';
+import { respuestaEstandar } from '../../utils/respuestaEstandar.js';
 import jwt from 'jsonwebtoken';
 
 export const registrarUsuario = async (req: Request, res: Response) => {

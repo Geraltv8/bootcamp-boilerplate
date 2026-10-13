@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { respuestaEstandar } from '../utils/respuestaEstandar';;
+import { respuestaEstandar } from '../utils/respuestaEstandar.js';;
 
 export const verificarRol = (...rolesPermitidos: string[]) => {
 
