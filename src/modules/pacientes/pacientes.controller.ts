@@ -11,7 +11,7 @@ const getPacientes = async (req: Request<unknown, unknown, unknown, IQueryPacien
 
         if (obraSocial) filtro['obraSocial.nombre'] = obraSocial.toUpperCase();
 
-        if (dn) filtro.dni = dni;
+        if (dni) filtro.dni = dni;
 
         const pacientes = await Paciente.find(filtro);
 
