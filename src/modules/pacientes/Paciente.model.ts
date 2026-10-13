@@ -30,7 +30,7 @@ const pacienteSchema = new Schema<IPaciente>({
     },
     email: {
         type: String,
-        required: [true, 'El correo electrónico del paciente es obligatorio'],
+        required: [true, 'El correo del paciente es obligatorio'],
         unique: [true, 'El correo electrónico del paciente debe ser único'],
         match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'El correo electrónico no es válido'],
     },
