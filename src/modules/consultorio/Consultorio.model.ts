@@ -42,10 +42,11 @@ const consultorioSchema = new Schema<IConsultorio>({
 });
 
 consultorioSchema.set('toJSON', {
-    transform: (_documento: Document, consultorioRetorno: Record<string, any>) => {
-        consultorioRetorno.id = consultorioRetorno._id;
-        delete consultorioRetorno._id;
-        delete consultorioRetorno.__v;
+    transform: (_documento: Document, consultorioRetorno) => {
+        const retorno = consultorioRetorno as unknown as Record<string, unknown> & { _id?: unknown; __v?: unknown };
+        retorno.id = retorno._id;
+        delete retorno._id;
+        delete retorno.__v;
     },
 });
 

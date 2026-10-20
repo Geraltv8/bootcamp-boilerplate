@@ -1,4 +1,4 @@
-import { Document, Schema, model } from 'mongoose';
+import { Schema, model, type Document } from 'mongoose';
 import type { IPaciente } from './types/Paciente.interface.js';
 import { ObraSocial } from './types/PacienteObraSocial.enum.js';
 import { TipoTelefono } from './types/PacienteTelefono.enum.js';
@@ -8,40 +8,43 @@ const pacienteSchema = new Schema<IPaciente>({
         type: String,
         required: [true, 'El nombre del paciente es obligatorio'],
         uppercase: true,
+        trim: true,
     },
     dni: {
         type: String,
         required: [true, 'El DNI del paciente es obligatorio'],
         unique: [true, 'El DNI del paciente debe ser único'],
-        match: [/^[0-9]{7,8}$/, 'El DNI debe tener 8 dígitos'],
+        match: [/^[0-9]{7,8}$/, 'El DNI debe tener 7 u 8 dígitos'],
     },
     direccion: {
         calle: {
             type: String,
-            required: [true, 'La calle es obligatoria'],
+            default: 'Sin información',
         },
         numero: {
             type: String,
-            required: [true, 'El número es obligatorio'],
+            default: 'S/N',
         },
-        piso: String,
-        departamento: String,
-        barrio: String,
+        piso: { type: String, default: '' },
+        departamento: { type: String, default: '' },
+        barrio: { type: String, default: 'Sin información' },
     },
     email: {
         type: String,
         required: [true, 'El correo electronico del paciente es obligatorio'],
         unique: [true, 'El correo electrónico del paciente debe ser único'],
+        default: 'sin-email@autogenerado.local',
         match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'El correo electrónico no es válido'],
     },
     telefono: {
         tipo: {
             type: String,
             enum: Object.values(TipoTelefono),
+            default: TipoTelefono.CELULAR,
         },
         codigoArea: {
             type: String,
-            required: true,
+            default: '11',
             match: [/^[0-9]{2,5}$/, 'El código de área no es válido'],
         },
         numero: {
@@ -58,29 +61,26 @@ const pacienteSchema = new Schema<IPaciente>({
                 values: Object.values(ObraSocial),
                 message: '{VALUE} no es una obra social válida. Debe ser una de las siguientes: PAMI, OSPEL, OSDE, SANCOR, OSECAC, SWISS MEDICAL, GALENO, MEDICUS, OMINT, FEMEBA, OTRAS, NINGUNA',
             },
+            default: ObraSocial.NINGUNA,
         },
-        numeroAfiliado: String,
+        numeroAfiliado: { type: String, default: '' },
     },
     historialMedico: {
         fecha: {
             type: Date,
-            required: [true, 'La fecha del historial médico es obligatoria'],
-            validate: {
-                validator: (value: Date) => value >= new Date(),
-                message: 'La fecha del turno debe ser una fecha futura',
-            },
+            default: Date.now,
         },
         diagnostico: {
             type: String,
-            required: [true, 'El diagnóstico es obligatorio'],
+            default: 'Sin diagnóstico registrado',
         },
         tratamiento: {
             type: String,
-            required: [true, 'El tratamiento es obligatorio'],
+            default: 'Sin tratamiento registrado',
         },
         medico: {
             type: String,
-            required: [true, 'El nombre del médico es obligatorio'],
+            default: 'Sistema',
         },
     },
 }, {
@@ -88,10 +88,11 @@ const pacienteSchema = new Schema<IPaciente>({
 });
 
 pacienteSchema.set('toJSON', {
-    transform: (_documento: Document, pacienteRetorno: Record<string, any>) => {
-        pacienteRetorno.id = pacienteRetorno._id;
-        delete pacienteRetorno._id;
-        delete pacienteRetorno.__v;
+    transform: (_documento: Document, pacienteRetorno) => {
+        const retorno = pacienteRetorno as unknown as Record<string, unknown> & { _id?: unknown; __v?: unknown };
+        retorno.id = retorno._id;
+        delete retorno._id;
+        delete retorno.__v;
     },
 });
 

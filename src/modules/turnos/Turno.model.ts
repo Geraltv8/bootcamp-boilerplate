@@ -1,5 +1,5 @@
-import { Schema, model, Document } from 'mongoose';
-import type { ITurno } from "./types/Turno.interface.js";
+import { Schema, model, type Document } from 'mongoose';
+import type { ITurno } from './types/Turno.interface.js';
 import { Especialidad } from './types/TurnoEspecialidad.enum.js';
 import { EstadoTurno } from './types/TurnoEstado.enum.js';
 
@@ -25,9 +25,7 @@ const turnoSchema = new Schema<ITurno>({
         type: Date,
         required: [true, 'La fecha del turno es obligatoria'],
         validate: {
-            validator: function(value: Date) {
-                return value >= new Date();
-            },
+            validator: (value: Date) => value >= new Date(),
             message: 'La fecha del turno debe ser una fecha futura',
         },
     },
@@ -37,26 +35,29 @@ const turnoSchema = new Schema<ITurno>({
             values: Object.values(EstadoTurno),
             message: '{VALUE} no es un estado válido',
         },
+        default: EstadoTurno.PENDIENTE,
     },
     observaciones: {
         type: String,
         maxlength: [500, 'Las observaciones no pueden superar los 500 caracteres'],
+        default: '',
     },
     activo: {
         type: Boolean,
         default: true,
-        select: false
-    }
+        select: false,
+    },
 }, {
-        timestamps: true,
+    timestamps: true,
 });
 
 turnoSchema.set('toJSON', {
-    transform: (documento: Document, turnoRetorno: Record<string, any>) => {
-        turnoRetorno.id = turnoRetorno._id;
-        delete turnoRetorno._id;
-        delete turnoRetorno.__v;
-    }
+    transform: (_documento: Document, turnoRetorno) => {
+        const retorno = turnoRetorno as unknown as Record<string, unknown> & { _id?: unknown; __v?: unknown };
+        retorno.id = retorno._id;
+        delete retorno._id;
+        delete retorno.__v;
+    },
 });
 
 const TurnoModel = model<ITurno>('Turno', turnoSchema);
