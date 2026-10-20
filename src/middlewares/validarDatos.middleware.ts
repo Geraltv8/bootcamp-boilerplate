@@ -5,11 +5,14 @@ import { respuestaEstandar } from '../utils/respuestaEstandar.js';
 export const validarSchema = (schema: ZodObject) =>
 (req: Request, res: Response, next: NextFunction) => {
     try {
-        schema.parse({
+        const datosValidados = schema.parse({
             body: req.body,
             query: req.query,
             params: req.params,
         });
+        if (typeof datosValidados === 'object' && datosValidados !== null && 'body' in datosValidados) {
+            Object.assign(req, { body: datosValidados.body });
+        }
 
         next();
     } catch (error) {

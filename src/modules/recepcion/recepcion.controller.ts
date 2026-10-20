@@ -1,51 +1,47 @@
 import type { Request, Response } from 'express';
-import mongoose from 'mongoose';
 import Paciente from '../pacientes/Paciente.model.js';
-import Turno from '../turnos/Turno.model.js';
 import type { IRegistrarIngresoDTO } from './dtos/Recepcion.schema.js';
-import { EstadoTurno } from '../turnos/types/TurnoEstado.enum.js';
+import { crearReserva } from '../turnos/services/turnos.service.js';
 import { respuestaEstandar } from '../../utils/respuestaEstandar.js';
 import { obtenerMensajeError } from '../../utils/obtenerMensajeError.js';
 
-const registrarIngreso = async (
-    req: Request<unknown, unknown, IRegistrarIngresoDTO>,
-    res: Response,
-) => {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
+const buscarPaciente = async (req: Request<unknown, unknown, unknown, { dni: string }>, res: Response) => {
     try {
-        const { datosPaciente, especialidad, fechaTurno, estado, observaciones } = req.body;
-
-        const [nuevoPaciente] = await Paciente.create([datosPaciente], { session });
-        if (!nuevoPaciente) {
-            throw new Error('No se pudo crear el paciente');
-        }
-
-        const [nuevoTurno] = await Turno.create([
-            {
-                paciente: nuevoPaciente._id,
-                especialidad,
-                fechaTurno,
-                estado: estado || EstadoTurno.PENDIENTE,
-                observaciones,
-            },
-        ], { session });
-
-        if (!nuevoTurno) {
-            throw new Error('No se pudo crear el turno');
-        }
-
-        await session.commitTransaction();
-
-        const turnoCompleto = await Turno.findById(nuevoTurno._id).populate('paciente');
-        return respuestaEstandar(res, 201, true, 'ingreso paciente nuevo', turnoCompleto);
+        const paciente = await Paciente.findOne({ dni: req.query.dni, activo: true })
+            .select('nombre dni telefono');
+        if (!paciente) return respuestaEstandar(res, 404, false, 'No se encontró un paciente con ese DNI');
+        return respuestaEstandar(res, 200, true, 'Paciente encontrado', paciente);
     } catch (error: unknown) {
-        await session.abortTransaction();
-        return respuestaEstandar(res, 400, false, 'transaccion abortada', obtenerMensajeError(error));
-    } finally {
-        session.endSession();
+        return respuestaEstandar(res, 500, false, 'Error al buscar paciente', obtenerMensajeError(error));
     }
 };
 
-export { registrarIngreso };
+const registrarIngreso = async (req: Request<unknown, unknown, IRegistrarIngresoDTO>, res: Response) => {
+    try {
+        const paciente = await Paciente.findOne({ dni: req.body.dni, activo: true });
+        if (!paciente) return respuestaEstandar(res, 404, false, 'No se encontró un paciente con ese DNI');
+
+        const turno = await crearReserva({
+            pacienteId: String(paciente._id),
+            especialidadId: req.body.especialidadId,
+            fecha: req.body.fechaHoraInicio.slice(0, 10),
+            fechaHoraInicio: new Date(req.body.fechaHoraInicio),
+            ...(req.body.medicoId ? { medicoId: req.body.medicoId } : {}),
+            ...(req.body.consultorioId ? { consultorioId: req.body.consultorioId } : {}),
+            ...(req.usuario?.id ? { creadoPor: req.usuario.id } : {}),
+        });
+        return respuestaEstandar(res, 201, true, 'Turno registrado por recepción', turno);
+    } catch (error: unknown) {
+        const codigoError = typeof error === 'object' && error !== null && 'code' in error ? error.code : undefined;
+        const esConflicto = error instanceof RangeError || codigoError === 11000 || codigoError === 112 || codigoError === 251;
+        return respuestaEstandar(
+            res,
+            esConflicto ? 409 : 500,
+            false,
+            esConflicto ? 'No se pudo reservar el turno' : 'Error interno del servidor',
+            obtenerMensajeError(error),
+        );
+    }
+};
+
+export { buscarPaciente, registrarIngreso };

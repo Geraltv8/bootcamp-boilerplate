@@ -15,10 +15,10 @@ import consultorioRoutes from './src/modules/consultorio/consultorio.routes.js';
 import medicosRoutes from './src/modules/medicos/medicos.routes.js';
 import authRoutes from './src/modules/auth/auth.routes.js';
 import iaRoutes from './src/modules/ia/ia.routes.js';
+import especialidadesRoutes from './src/modules/especialidades/especialidades.routes.js';
+import agendasRoutes from './src/modules/agendas/agendas.routes.js';
 
 const app: Application = express();
-
-connectDB();
 
 app.use(express.json());
 app.use(auditMiddleware);
@@ -31,15 +31,22 @@ app.use('/api/v1/recepcion', recepcionRoutes);
 app.use('/api/v1/consultorio', consultorioRoutes);
 app.use('/api/v1/medicos', medicosRoutes);
 app.use('/api/v1/ia', iaRoutes);
+app.use('/api/v1/especialidades', especialidadesRoutes);
+app.use('/api/v1', agendasRoutes);
 
 app.use(errorHandlerMiddleware);
 
 const PORT: string | number = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-    console.log(`===============================================`);
-    console.log(`============SERVIDOR MUNICIPAL ACTIVO==========`);
-    console.log(`Servidor escuchando en http://localhost:${PORT}`);
-    console.log(`Entorno: ${process.env.ENTORNO || 'Local'} `);
-    console.log(`===============================================`);
-});
+const iniciarServidor = async (): Promise<void> => {
+    await connectDB();
+    app.listen(PORT, () => {
+        console.log(`===============================================`);
+        console.log(`============SERVIDOR MUNICIPAL ACTIVO==========`);
+        console.log(`Servidor escuchando en http://localhost:${PORT}`);
+        console.log(`Entorno: ${process.env.ENTORNO || 'Local'} `);
+        console.log(`===============================================`);
+    });
+};
+
+void iniciarServidor();

@@ -6,7 +6,7 @@ import { TipoTelefono } from './types/PacienteTelefono.enum.js';
 const pacienteSchema = new Schema<IPaciente>({
     nombre: {
         type: String,
-        required: [true, 'El nombre del paciente es obligatorio'],
+        default: 'PACIENTE',
         uppercase: true,
         trim: true,
     },
@@ -17,23 +17,19 @@ const pacienteSchema = new Schema<IPaciente>({
         match: [/^[0-9]{7,8}$/, 'El DNI debe tener 7 u 8 dígitos'],
     },
     direccion: {
-        calle: {
-            type: String,
-            default: 'Sin información',
-        },
-        numero: {
-            type: String,
-            default: 'S/N',
-        },
-        piso: { type: String, default: '' },
-        departamento: { type: String, default: '' },
-        barrio: { type: String, default: 'Sin información' },
+        type: new Schema({
+            calle: { type: String, default: 'Sin información' },
+            numero: { type: String, default: 'S/N' },
+            piso: { type: String, default: '' },
+            departamento: { type: String, default: '' },
+            barrio: { type: String, default: 'Sin información' },
+        }),
+        default: () => ({}),
     },
     email: {
         type: String,
-        required: [true, 'El correo electronico del paciente es obligatorio'],
-        unique: [true, 'El correo electrónico del paciente debe ser único'],
-        default: 'sin-email@autogenerado.local',
+        unique: true,
+        sparse: true,
         match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'El correo electrónico no es válido'],
     },
     telefono: {
@@ -44,45 +40,40 @@ const pacienteSchema = new Schema<IPaciente>({
         },
         codigoArea: {
             type: String,
-            default: '11',
-            match: [/^[0-9]{2,5}$/, 'El código de área no es válido'],
+            default: '',
+            match: [/^[0-9]{0,5}$/, 'El código de área no es válido'],
         },
         numero: {
             type: String,
             required: true,
-            match: [/^[0-9]{7,10}$/, 'El número de teléfono no es válido'],
+            match: [/^[0-9]{7,15}$/, 'El número de teléfono no es válido'],
         },
     },
     obraSocial: {
-        nombre: {
-            type: String,
-            required: [true, 'El nombre de la obra social es obligatorio'],
-            enum: {
-                values: Object.values(ObraSocial),
-                message: '{VALUE} no es una obra social válida. Debe ser una de las siguientes: PAMI, OSPEL, OSDE, SANCOR, OSECAC, SWISS MEDICAL, GALENO, MEDICUS, OMINT, FEMEBA, OTRAS, NINGUNA',
+        type: new Schema({
+            nombre: {
+                type: String,
+                enum: {
+                    values: Object.values(ObraSocial),
+                    message: '{VALUE} no es una obra social válida',
+                },
+                default: ObraSocial.NINGUNA,
             },
-            default: ObraSocial.NINGUNA,
-        },
-        numeroAfiliado: { type: String, default: '' },
+            numeroAfiliado: { type: String, default: '' },
+        }),
+        default: () => ({}),
     },
     historialMedico: {
-        fecha: {
-            type: Date,
-            default: Date.now,
-        },
-        diagnostico: {
-            type: String,
-            default: 'Sin diagnóstico registrado',
-        },
-        tratamiento: {
-            type: String,
-            default: 'Sin tratamiento registrado',
-        },
-        medico: {
-            type: String,
-            default: 'Sistema',
-        },
+        type: new Schema({
+            fecha: Date,
+            diagnostico: String,
+            tratamiento: String,
+            medico: String,
+        }),
+        required: false,
     },
+    activo: { type: Boolean, default: true },
+    revisionReserva: { type: Number, default: 0, select: false },
 }, {
     timestamps: true,
 });

@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { Especialidad } from '../../turnos/types/TurnoEspecialidad.enum.js';
 
 const idSchema = z.string().regex(/^[a-f\d]{24}$/i, 'El ID debe ser un ObjectId válido');
 
@@ -8,7 +7,7 @@ const medicoBodyFields = {
     nombre: z.string().trim().min(2, 'El nombre debe tener al menos 2 caracteres'),
     apellido: z.string().trim().min(2, 'El apellido debe tener al menos 2 caracteres'),
     matricula: z.string().trim().regex(/^[a-zA-Z0-9]+$/, 'La matrícula debe ser alfanumérica'),
-    especialidades: z.array(z.enum(Especialidad)).min(1, 'Debe indicar al menos una especialidad'),
+    especialidades: z.array(z.string().trim().toLowerCase().min(2)).min(1, 'Debe indicar al menos una especialidad'),
     telefono: z.string().trim(),
 };
 
@@ -35,7 +34,7 @@ export const idMedicoSchema = z.object({
 
 export const queryMedicosSchema = z.object({
     query: z.object({
-        especialidad: z.enum(Especialidad).optional(),
+        especialidad: z.string().trim().toLowerCase().min(2).optional(),
         activo: z.enum(['true', 'false']).optional(),
         busqueda: z.string().trim().min(1).optional(),
     }),

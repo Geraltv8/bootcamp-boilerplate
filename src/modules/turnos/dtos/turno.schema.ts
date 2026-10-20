@@ -1,32 +1,45 @@
 import { z } from 'zod';
-import { Especialidad } from '../types/TurnoEspecialidad.enum.js';
 import { EstadoTurno } from '../types/TurnoEstado.enum.js';
 
 const idSchema = z.string().regex(/^[a-f\d]{24}$/i, 'El ID debe ser un ObjectId válido');
 
 export const CrearTurnoSchema = z.object({
     body: z.object({
-        paciente: z.string().min(1, 'El ID del paciente es obligatorio'),
         medicoId: idSchema.optional(),
-        especialidad: z.enum(Especialidad, { message: 'Especialidad no válida' }),
-        estado: z.enum(EstadoTurno, { message: 'Estado de turno no válido' }).optional().default(EstadoTurno.PENDIENTE),
-        fechaTurno: z.coerce.date({ message: 'Formato de fecha inválido' }),
-        observaciones: z.string().max(500, 'Las observaciones no pueden superar los 500 caracteres').optional().default(''),
+        especialidadId: idSchema,
+        fechaHoraInicio: z.iso.datetime({ offset: true, message: 'Debe incluir fecha, hora y zona horaria' }),
     }),
 });
 
 export const ActualizarEstadoTurnoSchema = z.object({
     params: z.object({ id: idSchema }),
     body: z.object({
-        estado: z.enum(EstadoTurno, { message: 'Estado de turno no válido' }),
+        estado: z.enum([EstadoTurno.ATENDIDO, EstadoTurno.AUSENTE], {
+            message: 'El estado debe ser atendido o ausente',
+        }),
     }),
 });
 
-export const queryUrgenciaSchema = z.object({
+export const idTurnoSchema = z.object({ params: z.object({ id: idSchema }) });
+
+export const queryDisponibilidadSchema = z.object({
     query: z.object({
-        urgencia: z.enum(['true', 'false']).optional(),
+        especialidadId: idSchema,
+        fecha: z.iso.date(),
+        medicoId: idSchema.optional(),
     }),
 });
+
+export const queryTurnosSchema = z.object({
+    query: z.object({
+        fecha: z.iso.date().optional(),
+        estado: z.enum(EstadoTurno).optional(),
+        medicoId: idSchema.optional(),
+        pacienteId: idSchema.optional(),
+    }),
+});
+
+export const crearCancelacionSchema = z.object({ params: z.object({ id: idSchema }) });
 
 export type CrearTurnoDTO = z.infer<typeof CrearTurnoSchema>['body'];
-export type IQueryUrgencia = z.infer<typeof queryUrgenciaSchema>['query'];
+export type IQueryTurnos = z.infer<typeof queryTurnosSchema>['query'];

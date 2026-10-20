@@ -1,6 +1,5 @@
 import { Schema, model, type Document } from 'mongoose';
 import type { ITurno } from './types/Turno.interface.js';
-import { Especialidad } from './types/TurnoEspecialidad.enum.js';
 import { EstadoTurno } from './types/TurnoEstado.enum.js';
 
 const turnoSchema = new Schema<ITurno>({
@@ -13,13 +12,18 @@ const turnoSchema = new Schema<ITurno>({
         type: Schema.Types.ObjectId,
         ref: 'Medico',
     },
+    consultorioId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Consultorio',
+    },
+    creadoPor: {
+        type: Schema.Types.ObjectId,
+        ref: 'Usuario',
+    },
     especialidad: {
         type: String,
         required: true,
-        enum: {
-            values: Object.values(Especialidad),
-            message: '{VALUE} no es una especialidad válida',
-        },
+        trim: true,
     },
     fechaTurno: {
         type: Date,
@@ -50,6 +54,17 @@ const turnoSchema = new Schema<ITurno>({
 }, {
     timestamps: true,
 });
+
+turnoSchema.index(
+    { medicoId: 1, fechaTurno: 1 },
+    {
+        unique: true,
+        partialFilterExpression: {
+            medicoId: { $exists: true },
+            activo: true,
+        },
+    },
+);
 
 turnoSchema.set('toJSON', {
     transform: (_documento: Document, turnoRetorno) => {

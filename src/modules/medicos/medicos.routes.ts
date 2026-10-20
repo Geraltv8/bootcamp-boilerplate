@@ -14,8 +14,8 @@ import { createMedico, deleteMedico, getMedico, getMedicos, updateMedico } from 
 const router = Router();
 
 router.use(validarJWT);
-router.get('/', verificarRol(Rol.RECEPCIONISTA, Rol.ADMIN, Rol.MEDICO), validarSchema(queryMedicosSchema), getMedicos);
-router.get('/:id', verificarRol(Rol.RECEPCIONISTA, Rol.ADMIN, Rol.MEDICO), validarSchema(idMedicoSchema), getMedico);
+router.get('/', verificarRol(Rol.RECEPCIONISTA, Rol.ADMIN, Rol.MEDICO, Rol.PACIENTE), validarSchema(queryMedicosSchema), getMedicos);
+router.get('/:id', verificarRol(Rol.RECEPCIONISTA, Rol.ADMIN, Rol.MEDICO, Rol.PACIENTE), validarSchema(idMedicoSchema), getMedico);
 router.post('/', verificarRol(Rol.ADMIN), validarSchema(crearMedicoSchema), createMedico);
 router.patch('/:id', verificarRol(Rol.ADMIN, Rol.MEDICO), validarSchema(actualizarMedicoSchema), updateMedico);
 router.delete('/:id', verificarRol(Rol.ADMIN), validarSchema(idMedicoSchema), deleteMedico);

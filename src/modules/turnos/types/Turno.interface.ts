@@ -1,15 +1,15 @@
 import { Types, Document } from 'mongoose';
-import { Especialidad } from './TurnoEspecialidad.enum.js';
 import { EstadoTurno } from './TurnoEstado.enum.js';
 
 export interface ITurno extends Document {
     id?: Types.ObjectId;
     paciente: Types.ObjectId;
     medicoId?: Types.ObjectId;
-    especialidad: Especialidad;
+    consultorioId?: Types.ObjectId;
+    creadoPor?: Types.ObjectId;
+    especialidad: string;
     fechaTurno: Date;
     estado?: EstadoTurno;
     observaciones?: string;
     activo: boolean;
 }
-

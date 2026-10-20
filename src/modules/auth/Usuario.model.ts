@@ -9,7 +9,7 @@ export enum Rol {
 
 export interface IUsuario extends Document {
     email: string;
-    user: string;
+    user?: string;
     password: string;
     rol: Rol;
     activo: boolean;
@@ -17,7 +17,7 @@ export interface IUsuario extends Document {
 
 const usuarioSchema = new Schema<IUsuario>({
     email: { type: String, required: true, unique: true, trim: true },
-    user: { type: String, required: true, unique: true, trim: true },
+    user: { type: String, unique: true, sparse: true, trim: true },
     password: { type: String, required: true },
     rol: { type: String, enum: Object.values(Rol), default: Rol.RECEPCIONISTA },
     activo: { type: Boolean, default: true },

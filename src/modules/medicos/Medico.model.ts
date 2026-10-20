@@ -1,6 +1,5 @@
 import { model, Schema } from 'mongoose';
 import type { IMedico } from './types/Medico.interface.js';
-import { Especialidad } from '../turnos/types/TurnoEspecialidad.enum.js';
 
 const medicoSchema = new Schema<IMedico>({
     usuarioId: {
@@ -29,13 +28,7 @@ const medicoSchema = new Schema<IMedico>({
         trim: true,
     },
     especialidades: {
-        type: [{
-            type: String,
-            enum: {
-                values: Object.values(Especialidad),
-                message: '{VALUE} no es una especialidad válida',
-            },
-        }],
+        type: [String],
         required: [true, 'Debe indicar al menos una especialidad'],
         validate: {
             validator: (especialidades: string[]) => especialidades.length > 0,

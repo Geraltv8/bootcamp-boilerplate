@@ -30,11 +30,13 @@ export interface IHistorialMedico {
 
 export interface IPaciente extends Document {
     id?: Types.ObjectId;
-    nombre: string;
+    nombre?: string;
     dni: string;
-    direccion: IDireccion;
-    email: string;
+    direccion?: IDireccion;
+    email?: string;
     telefono: ITelefono;
-    obraSocial: IObraSocial;
-    historialMedico: IHistorialMedico;
+    obraSocial?: IObraSocial;
+    historialMedico?: IHistorialMedico;
+    activo: boolean;
+    revisionReserva: number;
 }

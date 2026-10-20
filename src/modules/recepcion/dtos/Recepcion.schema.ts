@@ -1,15 +1,19 @@
 import { z } from 'zod';
-import { crearPacienteSchema } from '../../pacientes/dtos/Paciente.schema.js';
-import { Especialidad } from '../../turnos/types/TurnoEspecialidad.enum.js';
-import { EstadoTurno } from '../../turnos/types/TurnoEstado.enum.js';
+const idSchema = z.string().regex(/^[a-f\d]{24}$/i, 'El ID debe ser un ObjectId válido');
 
 export const registrarIngresoSchema = z.object({
     body: z.object({
-        datosPaciente: crearPacienteSchema.shape.body,
-        especialidad: z.enum(Especialidad, { message: 'Especialidad no válida' }),
-        fechaTurno: z.coerce.date({ message: 'Formato de fecha inválido' }),
-        estado: z.enum(EstadoTurno, { message: 'Estado de turno no válido' }).optional().default(EstadoTurno.PENDIENTE),
-        observaciones: z.string().optional().default(''),
+        dni: z.string().trim().regex(/^[0-9]{7,8}$/, 'El DNI debe tener 7 u 8 dígitos'),
+        especialidadId: idSchema,
+        medicoId: idSchema.optional(),
+        consultorioId: idSchema.optional(),
+        fechaHoraInicio: z.iso.datetime({ offset: true, message: 'Debe incluir fecha, hora y zona horaria' }),
+    }),
+});
+
+export const buscarPacienteSchema = z.object({
+    query: z.object({
+        dni: z.string().trim().regex(/^[0-9]{7,8}$/, 'El DNI debe tener 7 u 8 dígitos'),
     }),
 });
 

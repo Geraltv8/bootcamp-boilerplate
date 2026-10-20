@@ -1,6 +1,5 @@
 import { Schema, model, type Document } from 'mongoose';
 import type { IConsultorio } from './types/Consultorio.interface.js';
-import { EspecialidadConsultorio } from './types/EspecialidadConsultorio.enum.js';
 
 const consultorioSchema = new Schema<IConsultorio>({
     nombre: {
@@ -13,10 +12,8 @@ const consultorioSchema = new Schema<IConsultorio>({
     especialidad: {
         type: String,
         required: [true, 'La especialidad del consultorio es obligatoria'],
-        enum: {
-            values: Object.values(EspecialidadConsultorio),
-            message: '{VALUE} no es una especialidad válida',
-        },
+        lowercase: true,
+        trim: true,
     },
     piso: {
         type: Number,

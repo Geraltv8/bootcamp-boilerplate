@@ -1,8 +1,10 @@
 import mongoose from 'mongoose';
+import { inicializarCatalogoEspecialidades } from '../modules/especialidades/especialidades.service.js';
 
 export const connectDB = async (): Promise<void> => {
     try {
         await mongoose.connect(process.env.DATABASE_URL_ATLAS as string);
+        await inicializarCatalogoEspecialidades();
     } catch (error) {
         console.error('🔴 Error al conectar a la base de datos:', error);
         process.exit(1);

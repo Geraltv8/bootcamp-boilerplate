@@ -4,6 +4,7 @@ import Medico from './Medico.model.js';
 import Usuario, { Rol } from '../auth/Usuario.model.js';
 import Turno from '../turnos/Turno.model.js';
 import { EstadoTurno } from '../turnos/types/TurnoEstado.enum.js';
+import Especialidad from '../especialidades/Especialidad.model.js';
 import type { IActualizarMedicoDTO, ICrearMedicoDTO, IQueryMedicos } from './dtos/Medico.schema.js';
 import { respuestaEstandar } from '../../utils/respuestaEstandar.js';
 
@@ -13,7 +14,8 @@ const getMedicos = async (req: Request<unknown, unknown, unknown, IQueryMedicos>
         const filtro: Record<string, unknown> = {};
 
         if (especialidad) filtro.especialidades = especialidad;
-        if (activo !== undefined) filtro.activo = activo === 'true';
+        filtro.activo = activo === undefined ? true : activo === 'true';
+        if (req.usuario?.rol === Rol.PACIENTE) filtro.activo = true;
         if (busqueda) {
             const busquedaEscapada = busqueda.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             const coincidencia = new RegExp(busquedaEscapada, 'i');
@@ -45,6 +47,13 @@ const createMedico = async (req: Request<unknown, unknown, ICrearMedicoDTO>, res
         const usuario = await Usuario.findById(req.body.usuarioId);
         if (!usuario || usuario.rol !== Rol.MEDICO) {
             return respuestaEstandar(res, 400, false, 'La cuenta indicada no existe o no tiene el rol de médico');
+        }
+        const especialidadesActivas = await Especialidad.countDocuments({
+            codigo: { $in: req.body.especialidades },
+            activo: true,
+        });
+        if (especialidadesActivas !== new Set(req.body.especialidades).size) {
+            return respuestaEstandar(res, 400, false, 'Una o más especialidades no existen o están inactivas');
         }
 
         const medicoExistente = await Medico.findOne({
@@ -84,6 +93,15 @@ const updateMedico = async (
             const usuario = await Usuario.findById(req.body.usuarioId);
             if (!usuario || usuario.rol !== Rol.MEDICO) {
                 return respuestaEstandar(res, 400, false, 'La cuenta indicada no existe o no tiene el rol de médico');
+            }
+            if (esAdmin && req.body.especialidades) {
+                const especialidadesActivas = await Especialidad.countDocuments({
+                    codigo: { $in: req.body.especialidades },
+                    activo: true,
+                });
+                if (especialidadesActivas !== new Set(req.body.especialidades).size) {
+                    return respuestaEstandar(res, 400, false, 'Una o más especialidades no existen o están inactivas');
+                }
             }
 
             const otroMedico = await Medico.findOne({
